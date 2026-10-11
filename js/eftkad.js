@@ -3,7 +3,7 @@
  */
 
 window.BernabaEftkad = {
-  servantsList: ['Tony', 'Beshoy', 'Morcos', 'Dawood', 'John Hani', 'John Rafik'],
+  servantsList: ['Youssef', 'Tony', 'Mario', 'Peter'],
 
   init: async function () {
     this.populateChildSelect();
