@@ -1,13 +1,13 @@
 /**
- * Toma el Rasol - QR Code Generator & Batch Exporter Engine
+ * Bernaba el Rasol - QR Code Generator & Batch Exporter Engine
  */
 
-window.TomaQR = {
+window.BernabaQR = {
   // Get Target User Portal URL for a Child
   getUserPortalUrl: function (childCode) {
     let baseUrl = window.location.origin + window.location.pathname;
-    // Replace admin/index.html or Toma_elrasol.html with user/index.html
-    baseUrl = baseUrl.replace(/\/(admin|Toma_elrasol\.html|index\.html).*/, '/user/index.html');
+    // Replace admin/index.html or Bernaba_elrasol.html with user/index.html
+    baseUrl = baseUrl.replace(/\/(admin|Bernaba_elrasol\.html|index\.html).*/, '/user/index.html');
     if (!baseUrl.endsWith('/user/index.html')) {
       baseUrl = window.location.origin + '/user/index.html';
     }
@@ -67,22 +67,22 @@ window.TomaQR = {
 
   // Batch Export All QR Codes into a downloaded ZIP file
   exportAllQRCodesZip: async function () {
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
 
     if (!children || children.length === 0) {
-      TomaUtils.showToast('No registered children found to export QR codes.', 'warning');
+      BernabaUtils.showToast('No registered children found to export QR codes.', 'warning');
       return;
     }
 
     if (typeof JSZip === 'undefined' || typeof saveAs === 'undefined') {
-      TomaUtils.showToast('ZIP Exporter libraries are loading, please try again.', 'error');
+      BernabaUtils.showToast('ZIP Exporter libraries are loading, please try again.', 'error');
       return;
     }
 
-    TomaUtils.showToast(`Generating ${children.length} QR Code images for ZIP export...`, 'info');
+    BernabaUtils.showToast(`Generating ${children.length} QR Code images for ZIP export...`, 'info');
 
     const zip = new JSZip();
-    const qrFolder = zip.folder("Toma_el_Rasol_QRCodes");
+    const qrFolder = zip.folder("Bernaba_el_Rasol_QRCodes");
 
     // Off-screen canvas helper for generating PNG blobs
     const canvas = document.createElement('canvas');
@@ -143,8 +143,8 @@ window.TomaQR = {
 
     // Generate ZIP file and trigger download
     const zipBlob = await zip.generateAsync({ type: "blob" });
-    saveAs(zipBlob, "Toma_el_Rasol_Children_QRCodes.zip");
+    saveAs(zipBlob, "Bernaba_el_Rasol_Children_QRCodes.zip");
 
-    TomaUtils.showToast(`Export Complete! Downloaded ZIP containing ${children.length} QR Code images.`, 'success');
+    BernabaUtils.showToast(`Export Complete! Downloaded ZIP containing ${children.length} QR Code images.`, 'success');
   }
 };

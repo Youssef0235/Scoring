@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Store & Presents Management & Purchasing Handler
+ * Bernaba el Rasol - Store & Presents Management & Purchasing Handler
  */
 
-window.TomaStore = {
+window.BernabaStore = {
   initAdmin: async function () {
     await this.renderStoreStatusToggle();
     await this.renderAdminGiftsGrid();
@@ -19,7 +19,7 @@ window.TomaStore = {
     const label = document.getElementById('store-status-label');
     if (!toggle) return;
 
-    const isActive = await TomaDB.getStoreStatus();
+    const isActive = await BernabaDB.getStoreStatus();
     toggle.checked = isActive;
     if (label) {
       label.textContent = isActive ? 'STORE ONLINE (Purchasing Enabled)' : 'STORE OFFLINE (Purchasing Disabled)';
@@ -28,16 +28,16 @@ window.TomaStore = {
   },
 
   handleToggleStoreStatus: async function (checkedBool) {
-    await TomaDB.setStoreStatus(checkedBool);
+    await BernabaDB.setStoreStatus(checkedBool);
     await this.renderStoreStatusToggle();
-    TomaUtils.showToast(`Store status updated: ${checkedBool ? 'ONLINE' : 'OFFLINE'}`, checkedBool ? 'success' : 'warning');
+    BernabaUtils.showToast(`Store status updated: ${checkedBool ? 'ONLINE' : 'OFFLINE'}`, checkedBool ? 'success' : 'warning');
   },
 
   renderAdminGiftsGrid: async function () {
     const grid = document.getElementById('admin-gifts-grid');
     if (!grid) return;
 
-    const gifts = await TomaDB.getGifts();
+    const gifts = await BernabaDB.getGifts();
     gifts.sort((a, b) => Number(b.points_price || 0) - Number(a.points_price || 0));
     if (gifts.length === 0) {
       grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748B;">No gifts created yet.</div>`;
@@ -56,8 +56,8 @@ window.TomaStore = {
           <strong style="color:var(--gold-dark); font-size:1.1rem;">🎁 ${gift.points_price} Pts</strong>
         </div>
         <div style="display:flex; gap:6px;">
-          <button class="btn btn-outline btn-sm" style="flex:1;" onclick="TomaStore.openEditGiftModal('${gift.id}')">✏️ Edit</button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="TomaStore.confirmDeleteGift('${gift.id}')">🗑️</button>
+          <button class="btn btn-outline btn-sm" style="flex:1;" onclick="BernabaStore.openEditGiftModal('${gift.id}')">✏️ Edit</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="BernabaStore.confirmDeleteGift('${gift.id}')">🗑️</button>
         </div>
       </div>
     `).join('');
@@ -69,11 +69,11 @@ window.TomaStore = {
     document.getElementById('gift-price').value = '';
     document.getElementById('gift-desc').value = '';
     document.getElementById('gift-image').value = '';
-    TomaUtils.openModal('modal-gift');
+    BernabaUtils.openModal('modal-gift');
   },
 
   openEditGiftModal: async function (giftId) {
-    const gifts = await TomaDB.getGifts();
+    const gifts = await BernabaDB.getGifts();
     const gift = gifts.find(g => String(g.id) === String(giftId));
     if (!gift) return;
 
@@ -83,7 +83,7 @@ window.TomaStore = {
     document.getElementById('gift-desc').value = gift.description || '';
     document.getElementById('gift-image').value = gift.image_url || '';
 
-    TomaUtils.openModal('modal-gift');
+    BernabaUtils.openModal('modal-gift');
   },
 
   saveGiftForm: async function (e) {
@@ -95,12 +95,12 @@ window.TomaStore = {
     const image = document.getElementById('gift-image').value.trim();
 
     if (!name || !price) {
-      TomaUtils.showToast('Please fill in Gift Name and Points Price.', 'error');
+      BernabaUtils.showToast('Please fill in Gift Name and Points Price.', 'error');
       return;
     }
 
     try {
-      await TomaDB.saveGift({
+      await BernabaDB.saveGift({
         id: id || undefined,
         name,
         points_price: Number(price),
@@ -108,23 +108,23 @@ window.TomaStore = {
         image_url: image || undefined
       });
 
-      TomaUtils.showToast('Gift saved successfully.', 'success');
-      TomaUtils.closeModal('modal-gift');
+      BernabaUtils.showToast('Gift saved successfully.', 'success');
+      BernabaUtils.closeModal('modal-gift');
       await this.renderAdminGiftsGrid();
     } catch (err) {
-      TomaUtils.showToast(err.message, 'error');
+      BernabaUtils.showToast(err.message, 'error');
     }
   },
 
   confirmDeleteGift: function (giftId) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Delete Gift Item',
       message: 'Are you sure you want to delete this gift item from the store?',
       confirmText: 'Yes, Delete',
       confirmClass: 'btn-danger',
       onConfirm: async () => {
-        await TomaDB.deleteGift(giftId);
-        TomaUtils.showToast('Gift deleted successfully.', 'success');
+        await BernabaDB.deleteGift(giftId);
+        BernabaUtils.showToast('Gift deleted successfully.', 'success');
         await this.renderAdminGiftsGrid();
       }
     });
@@ -134,9 +134,9 @@ window.TomaStore = {
     const container = document.getElementById('admin-purchases-container');
     if (!container) return;
 
-    const purchases = await TomaDB.getPurchases();
-    const children = await TomaDB.getChildren();
-    const gifts = await TomaDB.getGifts();
+    const purchases = await BernabaDB.getPurchases();
+    const children = await BernabaDB.getChildren();
+    const gifts = await BernabaDB.getGifts();
 
     const childMap = new Map(children.map(c => [String(c.id), c]));
     const giftMap = new Map(gifts.map(g => [String(g.id), g]));
@@ -167,14 +167,14 @@ window.TomaStore = {
               const dateStr = p.purchased_at || p.created_at || new Date().toISOString();
               return `
                 <tr>
-                  <td>${TomaUtils.formatDateTime(dateStr)}</td>
+                  <td>${BernabaUtils.formatDateTime(dateStr)}</td>
                   <td><strong>${child ? child.name : 'Child ID #' + p.child_id}</strong></td>
                   <td><span class="child-code">${child ? child.child_code : 'N/A'}</span></td>
                   <td>🎁 ${gift ? gift.name : 'Gift Item #' + p.gift_id}</td>
                   <td><strong style="color:var(--gold-dark);">${p.points_price || (gift ? gift.points_price : 0)} Pts</strong></td>
                   <td><span class="badge badge-success">CLAIMED</span></td>
                   <td style="text-align:center;">
-                    <button class="btn btn-danger btn-sm" onclick="TomaStore.confirmDeletePurchase('${p.id}')">
+                    <button class="btn btn-danger btn-sm" onclick="BernabaStore.confirmDeletePurchase('${p.id}')">
                       🗑️ Delete & Refund
                     </button>
                   </td>
@@ -188,18 +188,18 @@ window.TomaStore = {
   },
 
   confirmDeletePurchase: function (purchaseId) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Delete Purchase & Refund Points',
       message: 'Are you sure you want to delete this purchase record? The deducted points will be automatically refunded to the child.',
       confirmText: 'Yes, Delete & Refund',
       confirmClass: 'btn-danger',
       onConfirm: async () => {
         try {
-          await TomaDB.deletePurchase(purchaseId);
-          TomaUtils.showToast('Purchase record deleted and points refunded.', 'success');
+          await BernabaDB.deletePurchase(purchaseId);
+          BernabaUtils.showToast('Purchase record deleted and points refunded.', 'success');
           await this.renderAdminPurchasesTable();
         } catch (err) {
-          TomaUtils.showToast(err.message || 'Failed to delete purchase', 'error');
+          BernabaUtils.showToast(err.message || 'Failed to delete purchase', 'error');
         }
       }
     });
@@ -211,15 +211,15 @@ window.TomaStore = {
     const banner = document.getElementById('user-store-status-banner');
     if (!container) return;
 
-    const isStoreOn = await TomaDB.getStoreStatus();
+    const isStoreOn = await BernabaDB.getStoreStatus();
     if (banner) {
       banner.style.display = isStoreOn ? 'none' : 'block';
     }
 
-    const gifts = await TomaDB.getGifts();
+    const gifts = await BernabaDB.getGifts();
     gifts.sort((a, b) => Number(b.points_price || 0) - Number(a.points_price || 0));
-    const purchases = await TomaDB.getPurchases();
-    const childPoints = await TomaDB.getChildPoints(childId);
+    const purchases = await BernabaDB.getPurchases();
+    const childPoints = await BernabaDB.getChildPoints(childId);
 
     const childPurchase = purchases.find(p => String(p.child_id) === String(childId));
 
@@ -264,7 +264,7 @@ window.TomaStore = {
           <div class="gift-price-row">
             <span class="price-tag">🎁 ${gift.points_price} Pts</span>
           </div>
-          <button class="btn ${btnClass} btn-sm" style="width:100%;" ${disabledAttr} onclick="TomaStore.handleUserPurchase('${childId}', '${gift.id}')">
+          <button class="btn ${btnClass} btn-sm" style="width:100%;" ${disabledAttr} onclick="BernabaStore.handleUserPurchase('${childId}', '${gift.id}')">
             ${btnText}
           </button>
         </div>
@@ -274,18 +274,18 @@ window.TomaStore = {
 
   handleUserPurchase: async function (childId, giftId) {
     try {
-      await TomaDB.purchaseGift(childId, giftId);
-      TomaUtils.showToast('🎉 Congratulations! Gift purchased successfully.', 'success');
-      TomaUtils.launchConfetti();
+      await BernabaDB.purchaseGift(childId, giftId);
+      BernabaUtils.showToast('🎉 Congratulations! Gift purchased successfully.', 'success');
+      BernabaUtils.launchConfetti();
       
       // Refresh User Store & User Points Counter
-      if (window.TomaUserApp) {
-        await window.TomaUserApp.loadChildPortal(childId);
+      if (window.BernabaUserApp) {
+        await window.BernabaUserApp.loadChildPortal(childId);
       } else {
         await this.renderUserStore(childId);
       }
     } catch (err) {
-      TomaUtils.showToast(err.message || 'Purchase failed', 'error');
+      BernabaUtils.showToast(err.message || 'Purchase failed', 'error');
     }
   },
 

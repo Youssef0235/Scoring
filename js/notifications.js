@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Automated Native Website & Phone Popup Notification Engine
+ * Bernaba el Rasol - Automated Native Website & Phone Popup Notification Engine
  */
 
-window.TomaNotifications = {
+window.BernabaNotifications = {
   swRegistration: null,
 
   initAdmin: async function () {
@@ -30,7 +30,7 @@ window.TomaNotifications = {
 
   // 1. TODAY'S BIRTHDAYS SCANNER
   getTodayBirthdays: async function () {
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     const today = new Date();
     const curMonth = today.getMonth();
     const curDay = today.getDate();
@@ -69,10 +69,10 @@ window.TomaNotifications = {
                 <strong style="color:#0D2040; font-size:1.1rem;">🥳 ${c.name}</strong>
                 <span class="child-code" style="margin-left:6px;">${c.child_code}</span>
                 <div style="font-size:0.85rem; color:#047857; margin-top:2px;">
-                  Turns <strong>${TomaUtils.getAge(c.birth_date)}</strong> years old TODAY!
+                  Turns <strong>${BernabaUtils.getAge(c.birth_date)}</strong> years old TODAY!
                 </div>
               </div>
-              <button class="btn btn-gold btn-sm" onclick="TomaNotifications.triggerSystemPopup('🎉 Happy Birthday Today!', 'It is ${c.name}\\'s birthday today! Wishing them a blessed year!')">
+              <button class="btn btn-gold btn-sm" onclick="BernabaNotifications.triggerSystemPopup('🎉 Happy Birthday Today!', 'It is ${c.name}\\'s birthday today! Wishing them a blessed year!')">
                 🔔 Send Phone Popup
               </button>
             </div>
@@ -84,7 +84,7 @@ window.TomaNotifications = {
 
   // 2. TOMORROW'S BIRTHDAYS SCANNER
   getTomorrowBirthdays: async function () {
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -134,14 +134,14 @@ window.TomaNotifications = {
                 <strong style="color:#0D2040; font-size:1.05rem;">🎂 ${c.name}</strong>
                 <span class="child-code" style="margin-left:6px;">${c.child_code}</span>
                 <div style="font-size:0.85rem; color:#78350F; margin-top:2px;">
-                  Turns <strong>${TomaUtils.getAge(c.birth_date) + 1}</strong> years old tomorrow!
+                  Turns <strong>${BernabaUtils.getAge(c.birth_date) + 1}</strong> years old tomorrow!
                 </div>
               </div>
               <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn btn-gold btn-sm" onclick="TomaNotifications.triggerSystemPopup('🎂 Tomorrow Birthday Alert!', 'Tomorrow is ${c.name}\\'s birthday! Turning ${TomaUtils.getAge(c.birth_date) + 1} years old.')">
+                <button class="btn btn-gold btn-sm" onclick="BernabaNotifications.triggerSystemPopup('🎂 Tomorrow Birthday Alert!', 'Tomorrow is ${c.name}\\'s birthday! Turning ${BernabaUtils.getAge(c.birth_date) + 1} years old.')">
                   🔔 Send Phone Popup
                 </button>
-                <button class="btn btn-primary btn-sm" onclick="TomaEmailService.sendTomorrowReminderEmailNow([${JSON.stringify(c).replace(/"/g, '&quot;')}])">
+                <button class="btn btn-primary btn-sm" onclick="BernabaEmailService.sendTomorrowReminderEmailNow([${JSON.stringify(c).replace(/"/g, '&quot;')}])">
                   📧 Send Email Reminder Now
                 </button>
               </div>
@@ -154,7 +154,7 @@ window.TomaNotifications = {
 
   // 3. MONTHLY BIRTHDAY SUMMARY
   getMonthlyBirthdays: async function () {
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     const currentMonth = new Date().getMonth();
 
     return children.filter(child => {
@@ -168,7 +168,7 @@ window.TomaNotifications = {
     if (!container) return;
 
     const list = await this.getMonthlyBirthdays();
-    const monthName = TomaBirthdays.MONTH_NAMES[new Date().getMonth()];
+    const monthName = BernabaBirthdays.MONTH_NAMES[new Date().getMonth()];
 
     if (list.length === 0) {
       container.innerHTML = `
@@ -185,7 +185,7 @@ window.TomaNotifications = {
           <h4 style="margin:0; color:#0D2040;">
             📅 ${monthName} Birthday Roster (${list.length} Children)
           </h4>
-          <button class="btn btn-gold btn-sm" onclick="TomaNotifications.triggerSystemPopup('🗓️ Monthly Birthday Alert', '${list.length} children celebrate birthdays in ${monthName}!')">
+          <button class="btn btn-gold btn-sm" onclick="BernabaNotifications.triggerSystemPopup('🗓️ Monthly Birthday Alert', '${list.length} children celebrate birthdays in ${monthName}!')">
             🔔 Send Monthly Roster Popup
           </button>
         </div>
@@ -195,7 +195,7 @@ window.TomaNotifications = {
             <div style="background:#FAF8F5; padding:12px; border-radius:10px; border:1px solid rgba(212,175,55,0.2);">
               <strong style="color:#0D2040; display:block;">🎈 ${c.name}</strong>
               <div style="font-size:0.85rem; color:#64748B; margin-top:2px;">
-                Date: <strong>${TomaUtils.formatDate(c.birth_date)}</strong>
+                Date: <strong>${BernabaUtils.formatDate(c.birth_date)}</strong>
               </div>
             </div>
           `).join('')}
@@ -207,15 +207,15 @@ window.TomaNotifications = {
   triggerManualEmailCheck: async function () {
     const tomorrowList = await this.getTomorrowBirthdays();
     const monthlyList = await this.getMonthlyBirthdays();
-    const monthName = TomaBirthdays ? TomaBirthdays.MONTH_NAMES[new Date().getMonth()] : 'Current Month';
+    const monthName = BernabaBirthdays ? BernabaBirthdays.MONTH_NAMES[new Date().getMonth()] : 'Current Month';
 
-    if (tomorrowList.length > 0 && window.TomaEmailService) {
-      await window.TomaEmailService.sendTomorrowReminderEmailNow(tomorrowList);
-    } else if (monthlyList.length > 0 && window.TomaEmailService) {
-      await window.TomaEmailService.sendMonthlyRosterEmailNow(monthName, monthlyList);
+    if (tomorrowList.length > 0 && window.BernabaEmailService) {
+      await window.BernabaEmailService.sendTomorrowReminderEmailNow(tomorrowList);
+    } else if (monthlyList.length > 0 && window.BernabaEmailService) {
+      await window.BernabaEmailService.sendMonthlyRosterEmailNow(monthName, monthlyList);
     } else {
-      if (typeof TomaUtils !== 'undefined' && TomaUtils.showToast) {
-        TomaUtils.showToast('No birthdays scheduled for tomorrow or this month to dispatch.', 'warning');
+      if (typeof BernabaUtils !== 'undefined' && BernabaUtils.showToast) {
+        BernabaUtils.showToast('No birthdays scheduled for tomorrow or this month to dispatch.', 'warning');
       }
     }
   },
@@ -226,8 +226,8 @@ window.TomaNotifications = {
       return;
     }
 
-    const todayStr = TomaUtils.getTodayDateString();
-    const lastChecked = localStorage.getItem('toma_last_popup_check');
+    const todayStr = BernabaUtils.getTodayDateString();
+    const lastChecked = localStorage.getItem('Bernaba_last_popup_check');
 
     // Prevent duplicate popups on the same day
     if (lastChecked === todayStr) {
@@ -240,15 +240,15 @@ window.TomaNotifications = {
       tomorrowList.forEach(c => {
         this.triggerSystemPopup(
           `🎂 Tomorrow's Birthday Reminder! (1 Day Before)`,
-          `Tomorrow is ${c.name}'s birthday (${c.child_code}). They will turn ${TomaUtils.getAge(c.birth_date) + 1} years old tomorrow!`
+          `Tomorrow is ${c.name}'s birthday (${c.child_code}). They will turn ${BernabaUtils.getAge(c.birth_date) + 1} years old tomorrow!`
         );
       });
-      if (window.TomaEmailService) {
-        window.TomaEmailService.sendTomorrowReminderEmailNow(tomorrowList);
+      if (window.BernabaEmailService) {
+        window.BernabaEmailService.sendTomorrowReminderEmailNow(tomorrowList);
       }
     }
 
-    localStorage.setItem('toma_last_popup_check', todayStr);
+    localStorage.setItem('Bernaba_last_popup_check', todayStr);
   },
 
   // 5. NATIVE PHONE & BROWSER SYSTEM POPUP GENERATOR
@@ -373,7 +373,7 @@ window.TomaNotifications = {
     card.innerHTML = `
       <img src="${iconPath}" alt="Logo" style="width:42px; height:42px; border-radius:50%; border:2px solid #D4AF37; flex-shrink:0; object-fit:cover;">
       <div style="flex:1;">
-        <div style="font-size:0.75rem; color:#D4AF37; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px;">Toma el Rasol • Birthday Alert</div>
+        <div style="font-size:0.75rem; color:#D4AF37; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px;">Bernaba el Rasol • Birthday Alert</div>
         <strong style="font-size:1rem; color:#FFFFFF; display:block; margin-bottom:4px;">${title}</strong>
         <p style="font-size:0.88rem; color:rgba(255,255,255,0.85); margin:0; line-height:1.4;">${bodyMessage}</p>
       </div>

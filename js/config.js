@@ -1,5 +1,5 @@
 /**
- * Toma el Rasol - Application Configuration
+ * Bernaba el Rasol - Application Configuration
  * 
  * Replace SUPABASE_URL and SUPABASE_ANON_KEY with your live Supabase project details.
  * If left empty or invalid, the application automatically uses the local storage mock driver
@@ -13,5 +13,5 @@ window.APP_CONFIG = {
   // App Settings
   APP_NAME: 'Bernaba el Rasol',
   CHURCH_CLASS: 'St. Bernaba Youth Class',
-  DEFAULT_QR_BASE_URL: window.location.origin + window.location.pathname.replace(/Toma_elrasol\.html|admin\/index\.html|user\/index\.html/g, '') + 'user/index.html'
+  DEFAULT_QR_BASE_URL: window.location.origin + window.location.pathname.replace(/Bernaba_elrasol\.html|admin\/index\.html|user\/index\.html/g, '') + 'user/index.html'
 };

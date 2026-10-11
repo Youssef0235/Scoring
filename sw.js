@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Service Worker for Native Mobile & Browser Popup Notifications
+ * Bernaba el Rasol - Service Worker for Native Mobile & Browser Popup Notifications
  */
 
-const CACHE_NAME = 'toma-el-rasol-v1';
+const CACHE_NAME = 'bernaba-el-rasol-v1';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -14,7 +14,7 @@ self.addEventListener('activate', (event) => {
 
 // Listen for Push / Background Messages
 self.addEventListener('push', (event) => {
-  let data = { title: 'Toma el Rasol Birthday Alert', body: 'A child has an upcoming birthday!' };
+  let data = { title: 'Bernaba el Rasol Birthday Alert', body: 'A child has an upcoming birthday!' };
   if (event.data) {
     try {
       data = event.data.json();
@@ -47,7 +47,7 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {
-        if (client.url.includes('admin/index.html') || client.url.includes('Toma_elrasol.html')) {
+        if (client.url.includes('admin/index.html') || client.url.includes('Bernaba_elrasol.html')) {
           return client.focus();
         }
       }

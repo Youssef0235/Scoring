@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Attendance Recorder & Attendance History Handler
+ * Bernaba el Rasol - Attendance Recorder & Attendance History Handler
  */
 
-window.TomaAttendance = {
+window.BernabaAttendance = {
   currentCategory: 'sunday_school', // Default tab for recording
   historyCategory: 'mass', // Default tab for history
 
@@ -16,13 +16,13 @@ window.TomaAttendance = {
   setDefaultDate: function () {
     const dateInput = document.getElementById('att-date-picker');
     if (dateInput) {
-      const todayStr = TomaUtils.getTodayDateString();
+      const todayStr = BernabaUtils.getTodayDateString();
       dateInput.value = todayStr;
       dateInput.max = todayStr;
     }
     const historyDate = document.getElementById('att-history-date-filter');
     if (historyDate) {
-      historyDate.max = TomaUtils.getTodayDateString();
+      historyDate.max = BernabaUtils.getTodayDateString();
     }
   },
 
@@ -52,7 +52,7 @@ window.TomaAttendance = {
     const listContainer = document.getElementById('attendance-children-list');
     if (!listContainer) return;
 
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     const searchVal = (document.getElementById('att-search-input')?.value || '').toLowerCase();
 
     const filtered = children
@@ -66,7 +66,7 @@ window.TomaAttendance = {
     }
 
     listContainer.innerHTML = filtered.map(child => `
-      <div class="att-item" data-child-id="${child.id}" onclick="TomaAttendance.toggleSelectChild(this)">
+      <div class="att-item" data-child-id="${child.id}" onclick="BernabaAttendance.toggleSelectChild(this)">
         <div style="display:flex; align-items:center; gap:12px;">
           <input type="checkbox" class="att-checkbox" value="${child.id}" onclick="event.stopPropagation()">
           <div>
@@ -87,7 +87,7 @@ window.TomaAttendance = {
   },
 
   deleteAttendanceRecordFromHistory: function (recordId, childId, dateStr, childName) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Remove Attendance Record',
       message: `Are you sure you want to remove "${childName}" from attendance on ${dateStr}?`,
       icon: '🗑️',
@@ -95,11 +95,11 @@ window.TomaAttendance = {
       confirmClass: 'btn-danger',
       onConfirm: async () => {
         try {
-          await TomaDB.deleteAttendanceRecord(recordId, childId, dateStr);
-          TomaUtils.showToast(`Removed ${childName} from attendance on ${dateStr}.`, 'success');
+          await BernabaDB.deleteAttendanceRecord(recordId, childId, dateStr);
+          BernabaUtils.showToast(`Removed ${childName} from attendance on ${dateStr}.`, 'success');
           await this.renderAttendanceHistory();
         } catch (err) {
-          TomaUtils.showToast(err.message || 'Failed to delete attendance record', 'error');
+          BernabaUtils.showToast(err.message || 'Failed to delete attendance record', 'error');
         }
       }
     });
@@ -131,13 +131,13 @@ window.TomaAttendance = {
   saveAttendance: async function () {
     const dateStr = document.getElementById('att-date-picker')?.value;
     if (!dateStr) {
-      TomaUtils.showToast('Please select a valid date.', 'error');
+      BernabaUtils.showToast('Please select a valid date.', 'error');
       return;
     }
 
-    const todayStr = TomaUtils.getTodayDateString();
+    const todayStr = BernabaUtils.getTodayDateString();
     if (dateStr > todayStr) {
-      TomaUtils.showToast('Cannot record attendance for future dates.', 'error');
+      BernabaUtils.showToast('Cannot record attendance for future dates.', 'error');
       return;
     }
 
@@ -145,15 +145,15 @@ window.TomaAttendance = {
     const selectedChildIds = Array.from(checkedBoxes).map(cb => cb.value);
 
     if (selectedChildIds.length === 0) {
-      TomaUtils.showToast('Please select at least one child.', 'warning');
+      BernabaUtils.showToast('Please select at least one child.', 'warning');
       return;
     }
 
-    const user = TomaAuth.getCurrentUser();
+    const user = BernabaAuth.getCurrentUser();
     const adminUsername = user ? user.username : 'admin';
 
     try {
-      const result = await TomaDB.recordBulkAttendance(
+      const result = await BernabaDB.recordBulkAttendance(
         selectedChildIds,
         this.currentCategory,
         dateStr,
@@ -165,16 +165,16 @@ window.TomaAttendance = {
         msg += ` (+${result.pointsPerChild} pts auto-awarded per child!)`;
       }
 
-      TomaUtils.showToast(msg, 'success');
+      BernabaUtils.showToast(msg, 'success');
 
       // Refresh Kashf and History
-      if (window.TomaChildren) window.TomaChildren.loadChildren();
+      if (window.BernabaChildren) window.BernabaChildren.loadChildren();
       await this.renderAttendanceHistory();
 
       // Reset selection
       this.selectAll(false);
     } catch (err) {
-      TomaUtils.showToast(err.message || 'Failed to save attendance', 'error');
+      BernabaUtils.showToast(err.message || 'Failed to save attendance', 'error');
     }
   },
 
@@ -185,9 +185,9 @@ window.TomaAttendance = {
     this.setupEventListeners();
 
 
-    const records = await TomaDB.getAttendanceRecords();
-    const children = await TomaDB.getChildren();
-    const types = await TomaDB.getAttendanceTypes();
+    const records = await BernabaDB.getAttendanceRecords();
+    const children = await BernabaDB.getChildren();
+    const types = await BernabaDB.getAttendanceTypes();
 
     const childMap = new Map();
     children.forEach(c => {
@@ -300,11 +300,11 @@ window.TomaAttendance = {
 
     sortedDateKeys.forEach((dateStr, idx) => {
       const dateRecords = groupedByDate.get(dateStr);
-      const formattedDate = TomaUtils.formatDate ? TomaUtils.formatDate(dateStr) : dateStr;
+      const formattedDate = BernabaUtils.formatDate ? BernabaUtils.formatDate(dateStr) : dateStr;
 
       html += `
         <div class="att-date-card ${idx === 0 ? 'open' : ''}" id="att-date-card-${idx}">
-          <div class="att-date-header" onclick="TomaAttendance.toggleDateCard('${idx}')" style="cursor:pointer; user-select:none;">
+          <div class="att-date-header" onclick="BernabaAttendance.toggleDateCard('${idx}')" style="cursor:pointer; user-select:none;">
             <div class="att-date-title-wrap">
               <span class="att-date-icon">📅</span>
               <div>
@@ -347,7 +347,7 @@ window.TomaAttendance = {
                     </div>
                     <div style="display:flex; align-items:center; gap:6px;">
                       <div class="att-status-check" title="Present">✓</div>
-                      <button class="btn btn-outline-danger btn-sm" onclick="event.stopPropagation(); TomaAttendance.deleteAttendanceRecordFromHistory('${r.id}', '${r.child_id}', '${dateStr}', '${childName.replace(/'/g, "\\'")}')" title="Delete record for this child on this date">🗑️ Delete</button>
+                      <button class="btn btn-outline-danger btn-sm" onclick="event.stopPropagation(); BernabaAttendance.deleteAttendanceRecordFromHistory('${r.id}', '${r.child_id}', '${dateStr}', '${childName.replace(/'/g, "\\'")}')" title="Delete record for this child on this date">🗑️ Delete</button>
                     </div>
 
                   </div>

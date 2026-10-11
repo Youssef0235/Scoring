@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Excel File Parser & Interactive Column Mapper
+ * Bernaba el Rasol - Excel File Parser & Interactive Column Mapper
  */
 
-window.TomaExcelImporter = {
+window.BernabaExcelImporter = {
   rawSheetData: [],
   excelHeaders: [],
   mappedData: [],
@@ -47,7 +47,7 @@ window.TomaExcelImporter = {
     if (!file) return;
 
     if (typeof XLSX === 'undefined') {
-      TomaUtils.showToast('Excel parser library (SheetJS) is loading, please try again.', 'error');
+      BernabaUtils.showToast('Excel parser library (SheetJS) is loading, please try again.', 'error');
       return;
     }
 
@@ -72,7 +72,7 @@ window.TomaExcelImporter = {
 
         this.openColumnMappingModal();
       } catch (err) {
-        TomaUtils.showToast('Failed to parse Excel file: ' + err.message, 'error');
+        BernabaUtils.showToast('Failed to parse Excel file: ' + err.message, 'error');
       }
     };
     reader.readAsArrayBuffer(file);
@@ -102,7 +102,7 @@ window.TomaExcelImporter = {
       }
     });
 
-    TomaUtils.openModal('modal-excel-mapping');
+    BernabaUtils.openModal('modal-excel-mapping');
   },
 
   // Process Column Mapping & Generate Preview
@@ -111,7 +111,7 @@ window.TomaExcelImporter = {
     const dobColIdx = document.getElementById('excel-map-dob')?.value;
 
     if (nameColIdx === "" || dobColIdx === "") {
-      TomaUtils.showToast('Please select mapping for both Name and Birthdate.', 'error');
+      BernabaUtils.showToast('Please select mapping for both Name and Birthdate.', 'error');
       return;
     }
 
@@ -136,8 +136,8 @@ window.TomaExcelImporter = {
     });
 
     this.renderPreviewTable();
-    TomaUtils.closeModal('modal-excel-mapping');
-    TomaUtils.openModal('modal-excel-preview');
+    BernabaUtils.closeModal('modal-excel-mapping');
+    BernabaUtils.openModal('modal-excel-preview');
   },
 
   // Render Data Preview Modal
@@ -192,29 +192,29 @@ window.TomaExcelImporter = {
     const validRecords = this.mappedData.filter(d => d.isValid);
 
     if (validRecords.length === 0) {
-      TomaUtils.showToast('No valid records to import.', 'error');
+      BernabaUtils.showToast('No valid records to import.', 'error');
       return;
     }
 
     try {
       let importedCount = 0;
       for (const rec of validRecords) {
-        await TomaDB.createChild({
+        await BernabaDB.createChild({
           name: rec.name,
           birth_date: rec.birth_date
         });
         importedCount++;
       }
 
-      TomaUtils.showToast(`Successfully imported ${importedCount} children from Excel!`, 'success');
-      TomaUtils.closeModal('modal-excel-preview');
+      BernabaUtils.showToast(`Successfully imported ${importedCount} children from Excel!`, 'success');
+      BernabaUtils.closeModal('modal-excel-preview');
 
       // Refresh Kashf
-      if (window.TomaChildren) {
-        await window.TomaChildren.loadChildren();
+      if (window.BernabaChildren) {
+        await window.BernabaChildren.loadChildren();
       }
     } catch (err) {
-      TomaUtils.showToast('Import Error: ' + err.message, 'error');
+      BernabaUtils.showToast('Import Error: ' + err.message, 'error');
     }
   }
 };

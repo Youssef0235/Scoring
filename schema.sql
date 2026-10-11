@@ -1,5 +1,5 @@
 -- ====================================================================
--- Toma el Rasol - Complete Supabase SQL Database Migration Script
+-- Bernaba el Rasol - Complete Supabase SQL Database Migration Script
 -- ====================================================================
 -- Execute this script in your Supabase SQL Editor to create tables,
 -- relationships, constraints, indexes, and Row Level Security (RLS) policies.

@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Score (Manual Adjustments) & Points System (Rules Engine) Handler
+ * Bernaba el Rasol - Score (Manual Adjustments) & Points System (Rules Engine) Handler
  */
 
-window.TomaPointsEngine = {
+window.BernabaPointsEngine = {
   initScoreTab: async function () {
     await this.renderScoreChildrenList();
     await this.renderScoreAuditTable();
@@ -19,7 +19,7 @@ window.TomaPointsEngine = {
     const container = document.getElementById('score-children-list');
     if (!container) return;
 
-    const children = await TomaDB.getAllChildrenScores();
+    const children = await BernabaDB.getAllChildrenScores();
     const searchQ = (document.getElementById('score-search-input')?.value || '').toLowerCase();
 
     const filtered = children.filter(c => c.name.toLowerCase().includes(searchQ) || c.child_code.toLowerCase().includes(searchQ));
@@ -30,7 +30,7 @@ window.TomaPointsEngine = {
     }
 
     container.innerHTML = filtered.map(child => `
-      <div class="att-item" data-child-id="${child.id}" onclick="TomaPointsEngine.toggleSelectChild(this)">
+      <div class="att-item" data-child-id="${child.id}" onclick="BernabaPointsEngine.toggleSelectChild(this)">
         <div style="display:flex; align-items:center; gap:12px;">
           <input type="checkbox" class="score-child-cb" value="${child.id}" onclick="event.stopPropagation()">
           <div>
@@ -64,7 +64,7 @@ window.TomaPointsEngine = {
 
     const pointsVal = Number(pointsInput?.value);
     if (isNaN(pointsVal) || pointsVal === 0) {
-      TomaUtils.showToast('Please enter a valid non-zero points value (+20 or -10).', 'error');
+      BernabaUtils.showToast('Please enter a valid non-zero points value (+20 or -10).', 'error');
       return;
     }
 
@@ -72,16 +72,16 @@ window.TomaPointsEngine = {
     const selectedChildIds = Array.from(checkedBoxes).map(cb => cb.value);
 
     if (selectedChildIds.length === 0) {
-      TomaUtils.showToast('Please select at least one child.', 'warning');
+      BernabaUtils.showToast('Please select at least one child.', 'warning');
       return;
     }
 
     const reason = reasonInput?.value.trim() || 'Manual score adjustment';
-    const user = TomaAuth.getCurrentUser();
+    const user = BernabaAuth.getCurrentUser();
     const adminUser = user ? user.username : 'admin';
 
     for (const childId of selectedChildIds) {
-      await TomaDB.addPointTransaction({
+      await BernabaDB.addPointTransaction({
         child_id: childId,
         points: pointsVal,
         source_type: 'manual',
@@ -90,7 +90,7 @@ window.TomaPointsEngine = {
       });
     }
 
-    TomaUtils.showToast(`Applied ${pointsVal > 0 ? '+' : ''}${pointsVal} points to ${selectedChildIds.length} children.`, 'success');
+    BernabaUtils.showToast(`Applied ${pointsVal > 0 ? '+' : ''}${pointsVal} points to ${selectedChildIds.length} children.`, 'success');
 
     pointsInput.value = '';
     reasonInput.value = '';
@@ -98,15 +98,15 @@ window.TomaPointsEngine = {
 
     await this.renderScoreChildrenList();
     await this.renderScoreAuditTable();
-    if (window.TomaChildren) window.TomaChildren.loadChildren();
+    if (window.BernabaChildren) window.BernabaChildren.loadChildren();
   },
 
   renderScoreAuditTable: async function () {
     const container = document.getElementById('score-audit-container');
     if (!container) return;
 
-    const txs = await TomaDB.getPointTransactions();
-    const children = await TomaDB.getChildren();
+    const txs = await BernabaDB.getPointTransactions();
+    const children = await BernabaDB.getChildren();
     const childMap = new Map(children.map(c => [c.id, c]));
 
     // Filter to ONLY display records of manual score adjustments
@@ -137,7 +137,7 @@ window.TomaPointsEngine = {
               const isPositive = Number(t.points) > 0;
               return `
                 <tr>
-                  <td>${TomaUtils.formatDate(t.created_at)}</td>
+                  <td>${BernabaUtils.formatDate(t.created_at)}</td>
                   <td><strong>${child ? child.name : 'Unknown'}</strong></td>
                   <td><span class="child-code">${child ? child.child_code : 'N/A'}</span></td>
                   <td><strong style="color:${isPositive ? '#10B981' : '#EF4444'};">${isPositive ? '+' : ''}${t.points} Pts</strong></td>
@@ -157,7 +157,7 @@ window.TomaPointsEngine = {
     const container = document.getElementById('rules-table-container');
     if (!container) return;
 
-    const rules = await TomaDB.getPointRules();
+    const rules = await BernabaDB.getPointRules();
 
     if (rules.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:30px; color:#64748B;">No point rules defined yet.</div>`;
@@ -184,8 +184,8 @@ window.TomaPointsEngine = {
                 <td><strong style="color:var(--gold-dark); font-size:1.1rem;">+${r.points} Pts</strong></td>
                 <td><span class="badge ${r.active ? 'badge-success' : 'badge-danger'}">${r.active ? 'ACTIVE' : 'INACTIVE'}</span></td>
                 <td>
-                  <button class="btn btn-outline btn-sm btn-icon" title="Edit Rule" onclick="TomaPointsEngine.openEditRuleModal('${r.id}')">✏️</button>
-                  <button class="btn btn-danger btn-sm btn-icon" title="Delete Rule" onclick="TomaPointsEngine.confirmDeleteRule('${r.id}')">🗑️</button>
+                  <button class="btn btn-outline btn-sm btn-icon" title="Edit Rule" onclick="BernabaPointsEngine.openEditRuleModal('${r.id}')">✏️</button>
+                  <button class="btn btn-danger btn-sm btn-icon" title="Delete Rule" onclick="BernabaPointsEngine.confirmDeleteRule('${r.id}')">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -200,11 +200,11 @@ window.TomaPointsEngine = {
     document.getElementById('rule-name').value = '';
     document.getElementById('rule-type').value = 'custom';
     document.getElementById('rule-points').value = '10';
-    TomaUtils.openModal('modal-rule');
+    BernabaUtils.openModal('modal-rule');
   },
 
   openEditRuleModal: async function (ruleId) {
-    const rules = await TomaDB.getPointRules();
+    const rules = await BernabaDB.getPointRules();
     const rule = rules.find(r => r.id === ruleId);
     if (!rule) return;
 
@@ -213,7 +213,7 @@ window.TomaPointsEngine = {
     document.getElementById('rule-type').value = rule.event_type;
     document.getElementById('rule-points').value = rule.points;
 
-    TomaUtils.openModal('modal-rule');
+    BernabaUtils.openModal('modal-rule');
   },
 
   saveRuleForm: async function (e) {
@@ -224,36 +224,36 @@ window.TomaPointsEngine = {
     const points = document.getElementById('rule-points').value;
 
     if (!name || !points) {
-      TomaUtils.showToast('Please enter Event Name and Points value.', 'error');
+      BernabaUtils.showToast('Please enter Event Name and Points value.', 'error');
       return;
     }
 
     try {
-      await TomaDB.savePointRule({
+      await BernabaDB.savePointRule({
         id: id || undefined,
         event_name: name,
         event_type: type,
         points: Number(points)
       });
 
-      TomaUtils.showToast('Point rule saved.', 'success');
-      TomaUtils.closeModal('modal-rule');
+      BernabaUtils.showToast('Point rule saved.', 'success');
+      BernabaUtils.closeModal('modal-rule');
       await this.renderPointRulesTable();
     } catch (err) {
-      TomaUtils.showToast(err.message, 'error');
+      BernabaUtils.showToast(err.message, 'error');
     }
   },
 
   confirmDeleteRule: function (ruleId) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Delete Point Rule',
       message: 'Are you sure you want to delete this point rule?',
       icon: '🗑️',
       confirmText: 'Delete Rule',
       confirmClass: 'btn-danger',
       onConfirm: async () => {
-        await TomaDB.deletePointRule(ruleId);
-        TomaUtils.showToast('Point rule deleted.', 'success');
+        await BernabaDB.deletePointRule(ruleId);
+        BernabaUtils.showToast('Point rule deleted.', 'success');
         await this.renderPointRulesTable();
       }
     });

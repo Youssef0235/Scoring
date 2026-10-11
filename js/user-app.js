@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Child User Portal Application Controller
+ * Bernaba el Rasol - Child User Portal Application Controller
  */
 
-window.TomaUserApp = {
+window.BernabaUserApp = {
   currentChild: null,
 
   init: async function () {
@@ -16,13 +16,13 @@ window.TomaUserApp = {
     }
 
     // Try finding by Code first, then by ID
-    let child = await TomaDB.getChildByCode(childIdOrCode);
+    let child = await BernabaDB.getChildByCode(childIdOrCode);
     if (!child) {
-      child = await TomaDB.getChildById(childIdOrCode);
+      child = await BernabaDB.getChildById(childIdOrCode);
     }
     
     if (!child) {
-      TomaUtils.showToast(`Child ID "${childIdOrCode}" not found. Please log in with your Username & Password.`, 'error');
+      BernabaUtils.showToast(`Child ID "${childIdOrCode}" not found. Please log in with your Username & Password.`, 'error');
       this.showManualIdEntryCard();
       return;
     }
@@ -69,13 +69,13 @@ window.TomaUserApp = {
     const password = passInput ? passInput.value.trim() : '';
 
     if (!username || !password) {
-      TomaUtils.showToast('Please enter both your Username and Password.', 'error');
+      BernabaUtils.showToast('Please enter both your Username and Password.', 'error');
       return;
     }
 
-    const child = await TomaDB.getChildByCredentials(username, password);
+    const child = await BernabaDB.getChildByCredentials(username, password);
     if (!child) {
-      TomaUtils.showToast(`Invalid Username or Password. (e.g. username: firstname.lastname | password: firstname-lastname@tomaelrasol)`, 'error');
+      BernabaUtils.showToast(`Invalid Username or Password. (e.g. username: firstname.lastname | password: firstname-lastname@Bernabaelrasol)`, 'error');
       return;
     }
 
@@ -85,11 +85,11 @@ window.TomaUserApp = {
     this.showMainDashboard();
     this.currentChild = child;
     await this.loadChildPortal(child.id);
-    TomaUtils.showToast(`Welcome back, ${child.name}!`, 'success');
+    BernabaUtils.showToast(`Welcome back, ${child.name}!`, 'success');
   },
 
   loadChildPortal: async function (childId) {
-    const child = await TomaDB.getChildById(childId);
+    const child = await BernabaDB.getChildById(childId);
     if (!child) return;
 
     this.currentChild = child;
@@ -100,17 +100,17 @@ window.TomaUserApp = {
     document.getElementById('user-welcome-msg').textContent = `Keep up the great work, ${child.name.split(' ')[0]}!`;
 
     // Streaks & Milestone Bonus Points Engine
-    const stats = await TomaStreaks.calculateChildStats(child.id);
+    const stats = await BernabaStreaks.calculateChildStats(child.id);
     
     // Check and award +50 bonus points for milestones (10, 25, 50, 100, 150, 200)
-    const newMilestones = await TomaStreaks.checkAndAwardStreakMilestones(child.id, stats.massStreak, stats.sundaySchoolStreak);
+    const newMilestones = await BernabaStreaks.checkAndAwardStreakMilestones(child.id, stats.massStreak, stats.sundaySchoolStreak);
     
     // Update Points Counter (with any newly awarded bonus points)
-    const points = await TomaDB.getChildPoints(child.id);
+    const points = await BernabaDB.getChildPoints(child.id);
     this.animatePointsCounter('user-total-points', points);
 
     // Render Mass Flame Stage
-    const massFlameInfo = TomaStreaks.getFlameStage(stats.massStreak);
+    const massFlameInfo = BernabaStreaks.getFlameStage(stats.massStreak);
     const massStreakElem = document.getElementById('mass-streak-count');
     const massFlame = document.getElementById('mass-flame');
     if (massStreakElem && massFlame) {
@@ -123,7 +123,7 @@ window.TomaUserApp = {
     }
 
     // Render Sunday School Flame Stage
-    const ssFlameInfo = TomaStreaks.getFlameStage(stats.sundaySchoolStreak);
+    const ssFlameInfo = BernabaStreaks.getFlameStage(stats.sundaySchoolStreak);
     const ssStreakElem = document.getElementById('ss-streak-count');
     const ssFlame = document.getElementById('ss-flame');
     if (ssStreakElem && ssFlame) {
@@ -139,10 +139,10 @@ window.TomaUserApp = {
     this.renderStreakCelebrationBanner(child, stats.massStreak, stats.sundaySchoolStreak, newMilestones);
 
     // Leaderboard
-    await TomaLeaderboard.renderUserLeaderboard('user-leaderboard-list', child.id);
+    await BernabaLeaderboard.renderUserLeaderboard('user-leaderboard-list', child.id);
 
     // User Store
-    await TomaStore.initUser(child.id);
+    await BernabaStore.initUser(child.id);
 
     // Birthday Mode Check
     this.checkBirthdayMode(child);
@@ -153,7 +153,7 @@ window.TomaUserApp = {
     if (!bannerContainer) return;
 
     const highestStreak = Math.max(massStreak, ssStreak);
-    const flameInfo = TomaStreaks.getFlameStage(highestStreak);
+    const flameInfo = BernabaStreaks.getFlameStage(highestStreak);
 
     if (newMilestones && newMilestones.length > 0) {
       // Newly unlocked milestone!
@@ -180,7 +180,7 @@ window.TomaUserApp = {
       bannerContainer.prepend(card);
 
       // Launch Confetti Celebration
-      setTimeout(() => TomaUtils.launchConfetti(), 300);
+      setTimeout(() => BernabaUtils.launchConfetti(), 300);
     } else if (flameInfo.stage >= 2 && flameInfo.celebrationMsg) {
       // Show active milestone badge
       const card = document.createElement('div');
@@ -230,7 +230,7 @@ window.TomaUserApp = {
     const bannerContainer = document.getElementById('birthday-banner-container');
     if (!bannerContainer) return;
 
-    const isBdayMonth = TomaUtils.isBirthMonth(child.birth_date);
+    const isBdayMonth = BernabaUtils.isBirthMonth(child.birth_date);
 
     if (isBdayMonth) {
       bannerContainer.innerHTML = `
@@ -243,7 +243,7 @@ window.TomaUserApp = {
       `;
 
       // Launch Confetti
-      setTimeout(() => TomaUtils.launchConfetti(), 500);
+      setTimeout(() => BernabaUtils.launchConfetti(), 500);
     } else {
       bannerContainer.innerHTML = '';
     }
@@ -263,5 +263,5 @@ window.TomaUserApp = {
 
 // Initialize User Portal on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
-  TomaUserApp.init();
+  BernabaUserApp.init();
 });

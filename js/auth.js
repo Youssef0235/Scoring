@@ -1,16 +1,16 @@
 /**
- * Toma el Rasol - Authentication & Admin Role Management
+ * Bernaba el Rasol - Authentication & Admin Role Management
  */
 
-window.TomaAuth = {
-  SESSION_KEY: 'toma_admin_session_v1',
+window.BernabaAuth = {
+  SESSION_KEY: 'Bernaba_admin_session_v1',
 
   // Login Handler
   login: async function (username, password) {
     const cleanUser = username.trim().toLowerCase();
     
-    // Check credentials against TomaDB or seed
-    const db = await TomaDB.exportFullDatabase();
+    // Check credentials against BernabaDB or seed
+    const db = await BernabaDB.exportFullDatabase();
     const admins = db.admins || [];
     
     let matched = admins.find(

@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - General Utilities (Toast, Modals, Dates, Confetti)
+ * Bernaba el Rasol - General Utilities (Toast, Modals, Dates, Confetti)
  */
 
-window.TomaUtils = {
+window.BernabaUtils = {
   // Toast Notifications
   showToast: function (message, type = 'info') {
     let container = document.getElementById('toast-container');
@@ -169,7 +169,7 @@ window.TomaUtils = {
     }
   },
 
-  // Child Username & Password Generator (firstname.lastname / firstname-lastname@tomaelrasol)
+  // Child Username & Password Generator (firstname.lastname / firstname-lastname@Bernabaelrasol)
   getChildCredentials: function (childName) {
     if (!childName) return { username: '', password: '' };
     const cleanName = childName.trim().toLowerCase().replace(/[^a-z0-9\s]/gi, '');
@@ -181,7 +181,7 @@ window.TomaUtils = {
 
     if (parts.length === 1) {
       const u = parts[0];
-      const p = `${parts[0]}@tomaelrasol`;
+      const p = `${parts[0]}@Bernabaelrasol`;
       return { username: u, password: p };
     }
 
@@ -190,7 +190,7 @@ window.TomaUtils = {
     const lastNameHyphen = parts.slice(1).join('-');
 
     const username = `${firstName}.${lastName}`;
-    const password = `${firstName}-${lastNameHyphen}@tomaelrasol`;
+    const password = `${firstName}-${lastNameHyphen}@Bernabaelrasol`;
 
     return { username, password };
   }

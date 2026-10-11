@@ -1,5 +1,5 @@
 ========================================================================
-             TOMA EL RASOL - IMPORTANT ADMINISTRATIVE INFORMATION
+             BERNABA EL RASOL - IMPORTANT ADMINISTRATIVE INFORMATION
 ========================================================================
 
 1. ADMIN PORTAL LOGIN CREDENTIALS & ROLES
@@ -40,7 +40,7 @@ To log in to the Admin Dashboard (open admin/index.html):
 3. DIRECT ACCESS LINKS & USER ID ENTRY
 ------------------------------------------------------------------------
 • Main Gateway:
-  Open Toma_elrasol.html in any modern browser
+  Open index.html in any modern browser
 
 • Admin Portal Direct:
   Open admin/index.html

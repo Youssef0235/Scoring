@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Children Management (Kashf) & Profile Handler
+ * Bernaba el Rasol - Children Management (Kashf) & Profile Handler
  */
 
-window.TomaChildren = {
+window.BernabaChildren = {
   allChildren: [],
 
   init: async function () {
@@ -11,7 +11,7 @@ window.TomaChildren = {
   },
 
   loadChildren: async function () {
-    this.allChildren = await TomaDB.getAllChildrenScores();
+    this.allChildren = await BernabaDB.getAllChildrenScores();
     this.renderKashfGrid(this.allChildren);
   },
 
@@ -23,7 +23,7 @@ window.TomaChildren = {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: white; border-radius: 12px; border: 1px solid #E2E8F0;">
           <p style="font-size: 1.1rem; color: #64748B;">No children registered yet.</p>
-          <button class="btn btn-gold btn-sm" style="margin-top: 12px;" onclick="TomaUtils.openModal('modal-add-child')">+ Add Child Manually</button>
+          <button class="btn btn-gold btn-sm" style="margin-top: 12px;" onclick="BernabaUtils.openModal('modal-add-child')">+ Add Child Manually</button>
         </div>
       `;
       return;
@@ -36,15 +36,15 @@ window.TomaChildren = {
           <span class="child-code">${child.child_code}</span>
         </div>
         <div class="child-name">${child.name}</div>
-        <div class="child-dob">🎂 ${TomaUtils.formatDate(child.birth_date)} (${TomaUtils.getAge(child.birth_date)} yrs)</div>
+        <div class="child-dob">🎂 ${BernabaUtils.formatDate(child.birth_date)} (${BernabaUtils.getAge(child.birth_date)} yrs)</div>
         <div class="child-score-badge">
           <span>Total Score</span>
           <strong>⭐ ${child.total_points || 0} pts</strong>
         </div>
         <div class="child-card-actions">
-          <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="TomaChildren.openProfileModal('${child.id}')">View Profile</button>
-          <button class="btn btn-outline btn-sm btn-icon" title="Edit Child" onclick="TomaChildren.openEditModal('${child.id}')">✏️</button>
-          <button class="btn btn-danger btn-sm btn-icon" title="Delete Child" onclick="TomaChildren.confirmDelete('${child.id}')">🗑️</button>
+          <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="BernabaChildren.openProfileModal('${child.id}')">View Profile</button>
+          <button class="btn btn-outline btn-sm btn-icon" title="Edit Child" onclick="BernabaChildren.openEditModal('${child.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Delete Child" onclick="BernabaChildren.confirmDelete('${child.id}')">🗑️</button>
         </div>
       </div>
     `).join('');
@@ -65,41 +65,41 @@ window.TomaChildren = {
     const dobInput = document.getElementById('input-child-dob');
 
     if (!nameInput.value.trim() || !dobInput.value) {
-      TomaUtils.showToast('Please enter both Name and Birthdate.', 'error');
+      BernabaUtils.showToast('Please enter both Name and Birthdate.', 'error');
       return;
     }
 
     try {
-      const newChild = await TomaDB.createChild({
+      const newChild = await BernabaDB.createChild({
         name: nameInput.value.trim(),
         birth_date: dobInput.value
       });
 
-      TomaUtils.showToast(`Child "${newChild.name}" added successfully (${newChild.child_code}).`, 'success');
-      TomaUtils.closeModal('modal-add-child');
+      BernabaUtils.showToast(`Child "${newChild.name}" added successfully (${newChild.child_code}).`, 'success');
+      BernabaUtils.closeModal('modal-add-child');
       nameInput.value = '';
       dobInput.value = '';
       await this.loadChildren();
     } catch (err) {
-      TomaUtils.showToast(err.message || 'Failed to create child', 'error');
+      BernabaUtils.showToast(err.message || 'Failed to create child', 'error');
     }
   },
 
   // Open Child Profile Modal
   openProfileModal: async function (childId) {
-    const child = await TomaDB.getChildById(childId);
+    const child = await BernabaDB.getChildById(childId);
     if (!child) return;
 
-    const stats = await TomaStreaks.calculateChildStats(childId);
-    const points = await TomaDB.getChildPoints(childId);
+    const stats = await BernabaStreaks.calculateChildStats(childId);
+    const points = await BernabaDB.getChildPoints(childId);
 
     document.getElementById('profile-child-name').textContent = child.name;
     document.getElementById('profile-child-code').textContent = child.child_code;
-    document.getElementById('profile-child-dob').textContent = TomaUtils.formatDate(child.birth_date);
-    document.getElementById('profile-child-age').textContent = TomaUtils.getAge(child.birth_date);
+    document.getElementById('profile-child-dob').textContent = BernabaUtils.formatDate(child.birth_date);
+    document.getElementById('profile-child-age').textContent = BernabaUtils.getAge(child.birth_date);
     document.getElementById('profile-child-points').textContent = `${points} Pts`;
 
-    const creds = TomaUtils.getChildCredentials(child.name);
+    const creds = BernabaUtils.getChildCredentials(child.name);
     const uElem = document.getElementById('profile-child-username');
     const pElem = document.getElementById('profile-child-password');
     if (uElem) uElem.textContent = creds.username;
@@ -120,23 +120,23 @@ window.TomaChildren = {
     document.getElementById('profile-ss-streak').textContent = `${stats.sundaySchoolStreak} wks`;
 
     // Render QR Code
-    TomaQR.renderQRCode('profile-qr-container', child.child_code, 160);
+    BernabaQR.renderQRCode('profile-qr-container', child.child_code, 160);
     document.getElementById('btn-download-qr').onclick = () => {
-      TomaQR.downloadQR('profile-qr-container', child.child_code);
+      BernabaQR.downloadQR('profile-qr-container', child.child_code);
     };
 
-    TomaUtils.openModal('modal-child-profile');
+    BernabaUtils.openModal('modal-child-profile');
   },
 
   openEditModal: async function (childId) {
-    const child = await TomaDB.getChildById(childId);
+    const child = await BernabaDB.getChildById(childId);
     if (!child) return;
 
     document.getElementById('edit-child-id').value = child.id;
     document.getElementById('edit-child-name').value = child.name;
     document.getElementById('edit-child-dob').value = child.birth_date;
 
-    TomaUtils.openModal('modal-edit-child');
+    BernabaUtils.openModal('modal-edit-child');
   },
 
   handleEditChildForm: async function (e) {
@@ -146,27 +146,27 @@ window.TomaChildren = {
     const dob = document.getElementById('edit-child-dob').value;
 
     try {
-      await TomaDB.updateChild(id, { name, birth_date: dob });
-      TomaUtils.showToast('Child updated successfully.', 'success');
-      TomaUtils.closeModal('modal-edit-child');
+      await BernabaDB.updateChild(id, { name, birth_date: dob });
+      BernabaUtils.showToast('Child updated successfully.', 'success');
+      BernabaUtils.closeModal('modal-edit-child');
       await this.loadChildren();
     } catch (err) {
-      TomaUtils.showToast(err.message, 'error');
+      BernabaUtils.showToast(err.message, 'error');
     }
   },
 
   confirmDelete: function (childId) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Delete Child Record',
       message: 'Are you sure you want to delete this child? All attendance and points history for this child will be removed.',
       icon: '🗑️',
       confirmText: 'Delete Child',
       confirmClass: 'btn-danger',
       onConfirm: async () => {
-        await TomaDB.deleteChild(childId);
-        TomaUtils.showToast('Child deleted successfully.', 'success');
+        await BernabaDB.deleteChild(childId);
+        BernabaUtils.showToast('Child deleted successfully.', 'success');
         await this.loadChildren();
-        if (window.TomaLeaderboard) await TomaLeaderboard.renderAdminLeaderboard();
+        if (window.BernabaLeaderboard) await BernabaLeaderboard.renderAdminLeaderboard();
       }
     });
   },

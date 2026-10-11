@@ -7,7 +7,7 @@ Production-ready web application for managing a church youth class/group. Built 
 ## 1. Direct Access URLs & User Roles
 
 ### Direct Access URLs
-- **Main Gateway URL**: `Toma_elrasol.html`
+- **Main Gateway URL**: `index.html`
 - **Admin Portal Direct URL**: `admin/index.html`
 - **Child User Portal Direct URL**: `user/index.html`
 
@@ -21,10 +21,10 @@ Production-ready web application for managing a church youth class/group. Built 
 ## 2. 📧 Automated 24/7 Background Birthday Email Notifications
 
 ### Email Recipients Configuration File
-> 📁 **EMAIL CONFIGURATION FILE**: [`js/email-config.js`](file:///e:/tahdyrat/Toma%20el%20rasol/Website/js/email-config.js)
+> 📁 **EMAIL CONFIGURATION FILE**: [`js/email-config.js`](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/js/email-config.js)
 
 To add or remove email addresses that receive automated birthday notifications:
-1. Open [`js/email-config.js`](file:///e:/tahdyrat/Toma%20el%20rasol/Website/js/email-config.js) in your text editor.
+1. Open [`js/email-config.js`](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/js/email-config.js) in your text editor.
 2. Update the `NOTIFICATION_EMAILS` array:
 
 ```javascript
@@ -47,8 +47,8 @@ The email system runs completely in the background without requiring anyone to o
    - Checks the database for children whose birthday occurs **tomorrow** (`1 day in advance`).
    - Automatically sends a reminder email with the child's name, ID, and upcoming age.
 3. **Background Execution Services**:
-   - **Supabase Cloud Database `pg_cron`**: Scheduled background jobs in [`schema.sql`](file:///e:/tahdyrat/Toma%20el%20rasol/Website/schema.sql).
-   - **GitHub Actions Workflow**: 24/7 cron runner configured in [`.github/workflows/birthday_emails.yml`](file:///e:/tahdyrat/Toma%20el%20rasol/Website/.github/workflows/birthday_emails.yml) executing [`scripts/send_birthday_emails.js`](file:///e:/tahdyrat/Toma%20el%20rasol/Website/scripts/send_birthday_emails.js).
+   - **Supabase Cloud Database `pg_cron`**: Scheduled background jobs in [`schema.sql`](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/schema.sql).
+   - **GitHub Actions Workflow**: 24/7 cron runner configured in [`.github/workflows/birthday_emails.yml`](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/.github/workflows/birthday_emails.yml) executing [`scripts/send_birthday_emails.js`](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/scripts/send_birthday_emails.js).
 
 ---
 
@@ -57,7 +57,7 @@ The email system runs completely in the background without requiring anyone to o
 - Every child registered manually or via Excel import receives a **5-digit random numeric Child ID** (between `10000` and `99999`, e.g. `48291`, `83910`).
 - Uniqueness is enforced to guarantee **zero duplicate IDs** across the entire database.
 
-> 🔑 Administrative login accounts and credentials are listed in [IMPORTANT_INFO.txt](file:///e:/tahdyrat/Toma%20el%20rasol/Website/IMPORTANT_INFO.txt).
+> 🔑 Administrative login accounts and credentials are listed in [IMPORTANT_INFO.txt](file:///e:/tahdyrat/Bernaba%20el%20rasol/Website/IMPORTANT_INFO.txt).
 
 ---
 
@@ -70,7 +70,7 @@ The email system runs completely in the background without requiring anyone to o
 4. Select **Branch**: `main` and **Folder**: `/ (root)`.
 5. Click **Save**.
 6. GitHub provides your live repository URLs:
-   - Gateway: `https://<your-username>.github.io/<repo-name>/Toma_elrasol.html`
+   - Gateway: `https://<your-username>.github.io/<repo-name>/Bernaba_elrasol.html`
    - Admin Direct: `https://<your-username>.github.io/<repo-name>/admin/index.html`
    - User Direct: `https://<your-username>.github.io/<repo-name>/user/index.html`
 
@@ -94,7 +94,7 @@ The email system runs completely in the background without requiring anyone to o
 ### Batch QR Code ZIP Export
 1. Go to **Kashf (Children)** in the Admin Dashboard.
 2. Click **📥 Export All QR Codes (ZIP)**.
-3. The system compiles a QR Code image for every registered child into a downloaded ZIP file (`Toma_el_Rasol_Children_QRCodes.zip`).
+3. The system compiles a QR Code image for every registered child into a downloaded ZIP file (`Bernaba_el_Rasol_Children_QRCodes.zip`).
 4. Each image file inside the ZIP is named after the child's name (e.g. `Ahmed Boutros_CH-0001.png`).
 
 ---
@@ -120,7 +120,7 @@ window.APP_CONFIG = {
 
 ```text
 /
-├── Toma_elrasol.html           # Main Gateway Launcher
+├── Bernaba_elrasol.html           # Main Gateway Launcher
 ├── IMPORTANT_INFO.txt          # Credentials & Administrative Notes
 ├── admin/
 │   └── index.html              # Admin Dashboard Portal

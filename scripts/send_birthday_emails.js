@@ -1,5 +1,5 @@
 /**
- * Toma el Rasol - 24/7 Automated Background Birthday Email Script
+ * Bernaba el Rasol - 24/7 Automated Background Birthday Email Script
  * 
  * Runs automatically in background (cron schedule: 0 0 * * *).
  * 1. On 1st of month: Sends monthly birthday roster email to all emails in NOTIFICATION_EMAILS.
@@ -32,7 +32,7 @@ if (fs.existsSync(emailConfigPath)) {
 }
 
 console.log('====================================================');
-console.log('TOMA EL RASOL - 24/7 AUTOMATED BIRTHDAY EMAIL RUNNER');
+console.log('Bernaba EL RASOL - 24/7 AUTOMATED BIRTHDAY EMAIL RUNNER');
 console.log('Target Email Recipients:', NOTIFICATION_EMAILS);
 console.log('Execution Timestamp:', new Date().toISOString());
 console.log('====================================================');
@@ -107,12 +107,12 @@ async function runBirthdayEmailCheck() {
   console.log('Automated birthday email check completed successfully.');
 }
 
-const TomaEmailService = require('../js/email-service.js');
+const BernabaEmailService = require('../js/email-service.js');
 const emailConfig = require('../js/email-config.js');
 
 async function sendMonthlyDigestEmail(list, recipients) {
   const monthName = new Date().toLocaleString('en-US', { month: 'long' });
-  const emailPayload = TomaEmailService.buildMonthlyRosterEmail(monthName, list);
+  const emailPayload = BernabaEmailService.buildMonthlyRosterEmail(monthName, list);
   console.log(`[EMAIL DISPATCH] Monthly Birthday Digest -> ${recipients.join(', ')}`);
   console.log(`[EMAIL SUBJECT] ${emailPayload.subject}`);
   
@@ -135,7 +135,7 @@ async function sendMonthlyDigestEmail(list, recipients) {
 }
 
 async function sendTomorrowReminderEmail(list, recipients) {
-  const emailPayload = TomaEmailService.buildTomorrowReminderEmail(list);
+  const emailPayload = BernabaEmailService.buildTomorrowReminderEmail(list);
   console.log(`[EMAIL DISPATCH] Tomorrow Birthday Alert -> ${recipients.join(', ')}`);
   console.log(`[EMAIL SUBJECT] ${emailPayload.subject}`);
 

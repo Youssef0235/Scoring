@@ -1,12 +1,12 @@
 /**
- * Toma el Rasol - Admin Application Controller & Tab Router
+ * Bernaba el Rasol - Admin Application Controller & Tab Router
  */
 
-window.TomaAdminApp = {
+window.BernabaAdminApp = {
   init: async function () {
     // Check Authentication
-    if (!TomaAuth.isLoggedIn()) {
-      TomaUtils.openModal('modal-login');
+    if (!BernabaAuth.isLoggedIn()) {
+      BernabaUtils.openModal('modal-login');
       this.setupLoginHandler();
     } else {
       this.onAuthSuccess();
@@ -23,25 +23,25 @@ window.TomaAdminApp = {
       const pInput = document.getElementById('login-password').value;
 
       try {
-        await TomaAuth.login(uInput, pInput);
-        TomaUtils.closeModal('modal-login');
-        TomaUtils.showToast('Login successful! Welcome to Toma el Rasol.', 'success');
+        await BernabaAuth.login(uInput, pInput);
+        BernabaUtils.closeModal('modal-login');
+        BernabaUtils.showToast('Login successful! Welcome to Bernaba el Rasol.', 'success');
         this.onAuthSuccess();
       } catch (err) {
-        TomaUtils.showToast(err.message || 'Login failed', 'error');
+        BernabaUtils.showToast(err.message || 'Login failed', 'error');
       }
     });
   },
 
   onAuthSuccess: async function () {
-    TomaAuth.enforceRoleUI();
+    BernabaAuth.enforceRoleUI();
     this.setupTabNavigation();
 
     // Default tab based on role
     let defaultTab = 'kashf';
-    if (TomaAuth.isAttendanceAdmin()) {
+    if (BernabaAuth.isAttendanceAdmin()) {
       defaultTab = 'attendance';
-    } else if (TomaAuth.isTDashAdmin()) {
+    } else if (BernabaAuth.isTDashAdmin()) {
       defaultTab = 'score';
     }
 
@@ -73,14 +73,14 @@ window.TomaAdminApp = {
         this.closeMobileSidebar();
 
         // Block unauthorized access for Attendance Admin
-        if (TomaAuth.isAttendanceAdmin() && tabTarget !== 'attendance') {
-          TomaUtils.showToast('Access restricted to Attendance Admin.', 'warning');
+        if (BernabaAuth.isAttendanceAdmin() && tabTarget !== 'attendance') {
+          BernabaUtils.showToast('Access restricted to Attendance Admin.', 'warning');
           return;
         }
 
         // Block unauthorized access for T-dash Admin
-        if (TomaAuth.isTDashAdmin() && tabTarget !== 'score') {
-          TomaUtils.showToast('Access restricted to T-dash Admin.', 'warning');
+        if (BernabaAuth.isTDashAdmin() && tabTarget !== 'score') {
+          BernabaUtils.showToast('Access restricted to T-dash Admin.', 'warning');
           return;
         }
 
@@ -113,35 +113,35 @@ window.TomaAdminApp = {
     // Trigger tab specific data initializers
     switch (tabId) {
       case 'kashf':
-        await TomaChildren.init();
+        await BernabaChildren.init();
         break;
       case 'leaderboard':
-        await TomaLeaderboard.initAdmin();
+        await BernabaLeaderboard.initAdmin();
         break;
       case 'score':
-        await TomaPointsEngine.initScoreTab();
+        await BernabaPointsEngine.initScoreTab();
         break;
       case 'points_system':
-        await TomaPointsEngine.initRulesTab();
+        await BernabaPointsEngine.initRulesTab();
         break;
       case 'attendance':
-        await TomaAttendance.init();
+        await BernabaAttendance.init();
         break;
       case 'attendance_history':
-        await TomaAttendance.renderAttendanceHistory();
+        await BernabaAttendance.renderAttendanceHistory();
         break;
       case 'eftkad_entry':
 
-        await TomaEftkad.init();
+        await BernabaEftkad.init();
         break;
       case 'eftkad_history':
-        await TomaEftkad.renderEftkadHistory();
+        await BernabaEftkad.renderEftkadHistory();
         break;
       case 'birthdays':
-        await TomaBirthdays.initAdmin();
+        await BernabaBirthdays.initAdmin();
         break;
       case 'store':
-        await TomaStore.initAdmin();
+        await BernabaStore.initAdmin();
         break;
     }
   }
@@ -149,5 +149,5 @@ window.TomaAdminApp = {
 
 // Bootstrap application on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  TomaAdminApp.init();
+  BernabaAdminApp.init();
 });

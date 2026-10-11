@@ -1,17 +1,17 @@
 /**
- * Toma el Rasol - Data Management & Backup/Restore Handler
+ * Bernaba el Rasol - Data Management & Backup/Restore Handler
  */
 
-window.TomaBackup = {
+window.BernabaBackup = {
   // Export Database Snapshot to JSON file
   exportBackup: async function () {
     try {
-      const data = await TomaDB.exportFullDatabase();
+      const data = await BernabaDB.exportFullDatabase();
       const jsonStr = JSON.stringify(data, null, 2);
       const blob = new Blob([jsonStr], { type: 'application/json' });
       
-      const dateStr = TomaUtils.getTodayDateString();
-      const filename = `Toma_el_Rasol_Backup_${dateStr}.json`;
+      const dateStr = BernabaUtils.getTodayDateString();
+      const filename = `Bernaba_el_Rasol_Backup_${dateStr}.json`;
 
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -20,9 +20,9 @@ window.TomaBackup = {
       a.click();
       document.body.removeChild(a);
 
-      TomaUtils.showToast('Backup JSON downloaded successfully!', 'success');
+      BernabaUtils.showToast('Backup JSON downloaded successfully!', 'success');
     } catch (err) {
-      TomaUtils.showToast('Failed to generate backup: ' + err.message, 'error');
+      BernabaUtils.showToast('Failed to generate backup: ' + err.message, 'error');
     }
   },
 
@@ -46,12 +46,12 @@ window.TomaBackup = {
         const confirmMsg = `Backup file validated successfully!\n\nContains:\n• ${childCount} Children\n• ${giftCount} Gifts\n• ${txCount} Point Transactions\n\nWARNING: Restoring will replace existing application data. Do you wish to proceed?`;
 
         if (confirm(confirmMsg)) {
-          await TomaDB.restoreFullDatabase(parsed);
-          TomaUtils.showToast('Database restored successfully! Reloading...', 'success');
+          await BernabaDB.restoreFullDatabase(parsed);
+          BernabaUtils.showToast('Database restored successfully! Reloading...', 'success');
           setTimeout(() => window.location.reload(), 1200);
         }
       } catch (err) {
-        TomaUtils.showToast('Restore Failed: ' + err.message, 'error');
+        BernabaUtils.showToast('Restore Failed: ' + err.message, 'error');
       }
     };
     reader.readAsText(file);

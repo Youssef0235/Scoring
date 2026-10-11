@@ -1,9 +1,9 @@
 /**
- * Toma el Rasol - Data Access Layer (Live Supabase Backend + Offline LocalStorage Fallback)
+ * Bernaba el Rasol - Data Access Layer (Live Supabase Backend + Offline LocalStorage Fallback)
  */
 
 (function () {
-  const STORAGE_KEY = 'toma_el_rasol_db_v3';
+  const STORAGE_KEY = 'Bernaba_el_rasol_db_v3';
 
   // Initial Seed Schema for LocalStorage Fallback (Empty data template for new deployment)
   const INITIAL_SEED = {
@@ -124,7 +124,7 @@
   }
 
   // Unified Data Access API
-  window.TomaDB = {
+  window.BernabaDB = {
     isLiveSupabase: function () {
       return getSupabaseClient() !== null;
     },
@@ -172,8 +172,8 @@
 
       return children.find(c => {
         if (!c || !c.name) return false;
-        const creds = (typeof TomaUtils !== 'undefined' && TomaUtils.getChildCredentials)
-          ? TomaUtils.getChildCredentials(c.name)
+        const creds = (typeof BernabaUtils !== 'undefined' && BernabaUtils.getChildCredentials)
+          ? BernabaUtils.getChildCredentials(c.name)
           : { username: '', password: '' };
 
         const matchCalculated = (creds.username === uClean && creds.password === pClean);

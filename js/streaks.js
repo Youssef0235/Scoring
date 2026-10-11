@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Attendance Statistics, Dynamic Flame Heat Engine & Streak Milestones
+ * Bernaba el Rasol - Attendance Statistics, Dynamic Flame Heat Engine & Streak Milestones
  */
 
-window.TomaStreaks = {
+window.BernabaStreaks = {
   // Milestone numbers: 10, 25, 50, 100, 150, 200
   MILESTONES: [10, 25, 50, 100, 150, 200],
 
@@ -97,8 +97,8 @@ window.TomaStreaks = {
    * Calculate Attendance Statistics & Streaks for a Child
    */
   calculateChildStats: async function (childId) {
-    const allAttendance = await TomaDB.getAttendanceRecords();
-    const attTypes = await TomaDB.getAttendanceTypes();
+    const allAttendance = await BernabaDB.getAttendanceRecords();
+    const attTypes = await BernabaDB.getAttendanceTypes();
 
     const childAtt = allAttendance.filter(a => a.child_id === childId);
 
@@ -212,7 +212,7 @@ window.TomaStreaks = {
    * AUTOMATIC +50 BONUS POINTS AWARDING ON MILESTONES (10, 25, 50, 100, 150, 200)
    */
   checkAndAwardStreakMilestones: async function (childId, massStreak, ssStreak) {
-    const existingTxs = await TomaDB.getPointTransactions();
+    const existingTxs = await BernabaDB.getPointTransactions();
     const childTxs = existingTxs.filter(t => t.child_id === childId);
     
     const awardedMilestones = [];
@@ -227,7 +227,7 @@ window.TomaStreaks = {
           
           if (!alreadyAwarded) {
             console.log(`🎉 Awarding +50 Bonus Points to child ${childId} for ${milestone}-Week ${categoryName} streak milestone!`);
-            await TomaDB.addPointTransaction({
+            await BernabaDB.addPointTransaction({
               child_id: childId,
               points: 50,
               source_type: 'custom_rule',

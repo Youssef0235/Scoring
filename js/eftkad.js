@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Eftkad Visit Entry & Eftkad History Handler
+ * Bernaba el Rasol - Eftkad Visit Entry & Eftkad History Handler
  */
 
-window.TomaEftkad = {
+window.BernabaEftkad = {
   servantsList: ['Tony', 'Beshoy', 'Morcos', 'Dawood', 'John Hani', 'John Rafik'],
 
   init: async function () {
@@ -16,7 +16,7 @@ window.TomaEftkad = {
   setDefaultDate: function () {
     const d = document.getElementById('eftkad-date');
     if (d) {
-      const todayStr = TomaUtils.getTodayDateString();
+      const todayStr = BernabaUtils.getTodayDateString();
       d.value = todayStr;
       d.max = todayStr;
     }
@@ -26,7 +26,7 @@ window.TomaEftkad = {
     const select = document.getElementById('eftkad-child-select');
     if (!select) return;
 
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     select.innerHTML = `<option value="">-- Select a Child --</option>` +
       children.map(c => `<option value="${c.id}">${c.name} (${c.child_code})</option>`).join('');
   },
@@ -50,31 +50,31 @@ window.TomaEftkad = {
     const dateStr = document.getElementById('eftkad-date')?.value;
 
     if (!childId || !dateStr) {
-      TomaUtils.showToast('Please select a child and visit date.', 'error');
+      BernabaUtils.showToast('Please select a child and visit date.', 'error');
       return;
     }
 
-    const todayStr = TomaUtils.getTodayDateString();
+    const todayStr = BernabaUtils.getTodayDateString();
     if (dateStr > todayStr) {
-      TomaUtils.showToast('Cannot record Eftkad visit for future dates.', 'error');
+      BernabaUtils.showToast('Cannot record Eftkad visit for future dates.', 'error');
       return;
     }
 
     const checkedServants = Array.from(document.querySelectorAll('.eftkad-servant-cb:checked')).map(cb => cb.value);
 
     if (checkedServants.length === 0) {
-      TomaUtils.showToast('Please select at least one servant.', 'warning');
+      BernabaUtils.showToast('Please select at least one servant.', 'warning');
       return;
     }
 
-    const user = TomaAuth.getCurrentUser();
+    const user = BernabaAuth.getCurrentUser();
     const adminUsername = user ? user.username : 'admin';
 
     try {
-      await TomaDB.addEftkadRecord(childId, checkedServants, dateStr, adminUsername);
-      const child = await TomaDB.getChildById(childId);
+      await BernabaDB.addEftkadRecord(childId, checkedServants, dateStr, adminUsername);
+      const child = await BernabaDB.getChildById(childId);
 
-      TomaUtils.showToast(`Eftkad visit recorded for ${child ? child.name : 'child'}!`, 'success');
+      BernabaUtils.showToast(`Eftkad visit recorded for ${child ? child.name : 'child'}!`, 'success');
 
       // Reset Form
       document.getElementById('eftkad-child-select').value = '';
@@ -82,7 +82,7 @@ window.TomaEftkad = {
 
       await this.renderEftkadHistory();
     } catch (err) {
-      TomaUtils.showToast(err.message || 'Failed to save Eftkad record.', 'error');
+      BernabaUtils.showToast(err.message || 'Failed to save Eftkad record.', 'error');
     }
   },
 
@@ -90,8 +90,8 @@ window.TomaEftkad = {
     const container = document.getElementById('eftkad-history-container');
     if (!container) return;
 
-    const records = await TomaDB.getEftkadRecords();
-    const children = await TomaDB.getChildren();
+    const records = await BernabaDB.getEftkadRecords();
+    const children = await BernabaDB.getChildren();
 
     const childMap = new Map();
     children.forEach(c => {
@@ -155,12 +155,12 @@ window.TomaEftkad = {
               const childName = child ? child.name : 'Child Record';
               return `
                 <tr>
-                  <td><strong>${TomaUtils.formatDate(r.date)}</strong></td>
+                  <td><strong>${BernabaUtils.formatDate(r.date)}</strong></td>
                   <td>${childName}</td>
                   <td><span class="child-code">${child ? child.child_code : 'N/A'}</span></td>
                   <td>${servantsArr.map(s => `<span class="badge badge-gold" style="margin-right:4px;">👤 ${String(s).trim()}</span>`).join('')}</td>
                   <td style="text-align:center;">
-                    <button class="btn btn-outline-danger btn-sm" onclick="TomaEftkad.confirmDeleteRecord('${r.id}', '${r.child_id}', '${r.date}', '${childName.replace(/'/g, "\\'")}')" title="Delete Eftkad visit record">
+                    <button class="btn btn-outline-danger btn-sm" onclick="BernabaEftkad.confirmDeleteRecord('${r.id}', '${r.child_id}', '${r.date}', '${childName.replace(/'/g, "\\'")}')" title="Delete Eftkad visit record">
                       🗑️ Delete
                     </button>
                   </td>
@@ -174,19 +174,19 @@ window.TomaEftkad = {
   },
 
   confirmDeleteRecord: function (recordId, childId, dateStr, childName) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Delete Eftkad Record',
-      message: `Are you sure you want to delete the Eftkad visit record for "${childName}" on ${TomaUtils.formatDate(dateStr)}?`,
+      message: `Are you sure you want to delete the Eftkad visit record for "${childName}" on ${BernabaUtils.formatDate(dateStr)}?`,
       icon: '🗑️',
       confirmText: 'Yes, Delete',
       confirmClass: 'btn-danger',
       onConfirm: async () => {
         try {
-          await TomaDB.deleteEftkadRecord(recordId, childId, dateStr);
-          TomaUtils.showToast(`Deleted Eftkad record for ${childName}.`, 'success');
+          await BernabaDB.deleteEftkadRecord(recordId, childId, dateStr);
+          BernabaUtils.showToast(`Deleted Eftkad record for ${childName}.`, 'success');
           await this.renderEftkadHistory();
         } catch (err) {
-          TomaUtils.showToast(err.message || 'Failed to delete Eftkad record.', 'error');
+          BernabaUtils.showToast(err.message || 'Failed to delete Eftkad record.', 'error');
         }
       }
     });

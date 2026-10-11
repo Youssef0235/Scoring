@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Birthdays Organizer & Birthday Mode Handler
+ * Bernaba el Rasol - Birthdays Organizer & Birthday Mode Handler
  */
 
-window.TomaBirthdays = {
+window.BernabaBirthdays = {
   MONTH_NAMES: [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -16,7 +16,7 @@ window.TomaBirthdays = {
     const container = document.getElementById('admin-birthdays-container');
     if (!container) return;
 
-    const children = await TomaDB.getChildren();
+    const children = await BernabaDB.getChildren();
     const currentMonthIdx = new Date().getMonth();
 
     // Group children by month (0 - 11)
@@ -49,7 +49,7 @@ window.TomaBirthdays = {
                 <div style="background:#FAF8F5; padding:12px; border-radius:8px; border:1px solid rgba(212,175,55,0.2);">
                   <strong style="color:#0D2040; display:block;">${c.name}</strong>
                   <span style="font-size:0.85rem; color:#64748B;">
-                    📅 ${TomaUtils.formatDate(c.birth_date)} (${TomaUtils.getAge(c.birth_date)} yrs)
+                    📅 ${BernabaUtils.formatDate(c.birth_date)} (${BernabaUtils.getAge(c.birth_date)} yrs)
                   </span>
                 </div>
               `).join('')}

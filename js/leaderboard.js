@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Dynamic Leaderboard Handler
+ * Bernaba el Rasol - Dynamic Leaderboard Handler
  */
 
-window.TomaLeaderboard = {
+window.BernabaLeaderboard = {
   initAdmin: async function () {
     await this.renderAdminLeaderboard();
     const search = document.getElementById('lb-search-input');
@@ -15,7 +15,7 @@ window.TomaLeaderboard = {
     const container = document.getElementById('admin-leaderboard-container');
     if (!container) return;
 
-    const rankedChildren = await TomaDB.getAllChildrenScores();
+    const rankedChildren = await BernabaDB.getAllChildrenScores();
     const cleanQ = searchQuery.trim().toLowerCase();
 
     const filtered = rankedChildren.filter(c => 
@@ -53,10 +53,10 @@ window.TomaLeaderboard = {
                   <td><span class="badge ${rank === 1 ? 'badge-gold' : 'badge-navy'}">${medal}</span></td>
                   <td><strong>${child.name}</strong></td>
                   <td><span class="child-code">${child.child_code}</span></td>
-                  <td>${TomaUtils.formatDate(child.birth_date)}</td>
+                  <td>${BernabaUtils.formatDate(child.birth_date)}</td>
                   <td><strong style="color:var(--gold-dark); font-size:1.1rem;">⭐ ${child.total_points} Pts</strong></td>
                   <td>
-                    <button class="btn btn-outline-danger btn-sm" onclick="TomaLeaderboard.confirmResetChildScore('${child.id}', '${child.name.replace(/'/g, "\\'")}')" title="Reset score to 0">🔄 Reset Score</button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="BernabaLeaderboard.confirmResetChildScore('${child.id}', '${child.name.replace(/'/g, "\\'")}')" title="Reset score to 0">🔄 Reset Score</button>
                   </td>
                 </tr>
               `;
@@ -68,7 +68,7 @@ window.TomaLeaderboard = {
   },
 
   confirmResetChildScore: function (childId, childName) {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Reset Student Score',
       message: `Are you sure you want to reset the score of "${childName}" to 0 points?`,
       icon: '🔄',
@@ -76,21 +76,21 @@ window.TomaLeaderboard = {
       confirmClass: 'btn-danger',
       onConfirm: async () => {
         try {
-          const user = TomaAuth.getCurrentUser();
+          const user = BernabaAuth.getCurrentUser();
           const adminUser = user ? user.username : 'admin';
-          await TomaDB.resetChildScore(childId, adminUser);
-          TomaUtils.showToast(`Score for ${childName} has been reset to 0.`, 'success');
+          await BernabaDB.resetChildScore(childId, adminUser);
+          BernabaUtils.showToast(`Score for ${childName} has been reset to 0.`, 'success');
           await this.renderAdminLeaderboard();
-          if (window.TomaChildren) await TomaChildren.loadChildren();
+          if (window.BernabaChildren) await BernabaChildren.loadChildren();
         } catch (err) {
-          TomaUtils.showToast(err.message || 'Failed to reset score', 'error');
+          BernabaUtils.showToast(err.message || 'Failed to reset score', 'error');
         }
       }
     });
   },
 
   confirmResetAllScores: function () {
-    TomaUtils.showConfirmModal({
+    BernabaUtils.showConfirmModal({
       title: 'Reset All Scores to 0',
       message: '⚠️ Are you sure you want to reset ALL children\'s scores to 0? Everyone will start fresh from 0.',
       icon: '🔄',
@@ -98,14 +98,14 @@ window.TomaLeaderboard = {
       confirmClass: 'btn-danger',
       onConfirm: async () => {
         try {
-          const user = TomaAuth.getCurrentUser();
+          const user = BernabaAuth.getCurrentUser();
           const adminUser = user ? user.username : 'admin';
-          await TomaDB.resetAllScores(adminUser);
-          TomaUtils.showToast('All student scores have been reset to 0 successfully!', 'success');
+          await BernabaDB.resetAllScores(adminUser);
+          BernabaUtils.showToast('All student scores have been reset to 0 successfully!', 'success');
           await this.renderAdminLeaderboard();
-          if (window.TomaChildren) await TomaChildren.loadChildren();
+          if (window.BernabaChildren) await BernabaChildren.loadChildren();
         } catch (err) {
-          TomaUtils.showToast(err.message || 'Failed to reset all scores', 'error');
+          BernabaUtils.showToast(err.message || 'Failed to reset all scores', 'error');
         }
       }
     });
@@ -117,7 +117,7 @@ window.TomaLeaderboard = {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const rankedChildren = await TomaDB.getAllChildrenScores();
+    const rankedChildren = await BernabaDB.getAllChildrenScores();
 
     container.innerHTML = rankedChildren.map((child, index) => {
       const rank = index + 1;

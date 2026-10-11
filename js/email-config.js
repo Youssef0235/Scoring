@@ -1,5 +1,5 @@
 /**
- * Toma el Rasol - Automated Birthday Notification Emails Configuration
+ * Bernaba el Rasol - Automated Birthday Notification Emails Configuration
  * 
  * ==============================================================================
  * TO ADD OR REMOVE EMAIL RECIPIENTS:
@@ -17,7 +17,8 @@ const EMAIL_CONFIG = {
   NOTIFICATION_EMAILS: [
     // Add your church servant email addresses here (e.g. 'servant@church.org')
     "zcst010@gmail.com",
-    "Beshaymario@gmail.com"
+    "Beshaymario@gmail.com",
+    "Tonyrnashed@gmail.com"
   ],
 
   // Automated Email Service Options

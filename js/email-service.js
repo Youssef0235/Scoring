@@ -1,8 +1,8 @@
 /**
- * Toma el Rasol - Birthday Email Automation & Template Generator Engine
+ * Bernaba el Rasol - Birthday Email Automation & Template Generator Engine
  */
 
-const TomaEmailService = {
+const BernabaEmailService = {
   /**
    * Helper to retrieve notification emails safely
    */
@@ -39,7 +39,7 @@ const TomaEmailService = {
           <!-- Header -->
           <div style="background:#0D2040; padding:24px; text-align:center; border-bottom:4px solid #D4AF37;">
             <h1 style="color:#FFFFFF; margin:0; font-size:22px;">🎂 ${monthName} Birthday Roster</h1>
-            <p style="color:#D4AF37; margin:6px 0 0 0; font-size:14px; text-transform:uppercase; letter-spacing:1px;">Toma el Rasol • Automated Monthly Notification</p>
+            <p style="color:#D4AF37; margin:6px 0 0 0; font-size:14px; text-transform:uppercase; letter-spacing:1px;">Bernaba el Rasol • Automated Monthly Notification</p>
           </div>
           
           <!-- Content -->
@@ -72,14 +72,14 @@ const TomaEmailService = {
           <!-- Footer -->
           <div style="background:#FAF8F5; padding:16px; text-align:center; border-top:1px solid #E2E8F0; font-size:12px; color:#64748B;">
             Sent automatically to: ${emailList.join(', ')}<br>
-            © Toma el Rasol Church Class Management
+            © Bernaba el Rasol Church Class Management
           </div>
         </div>
       </div>
     `;
 
     return {
-      subject: `🎂 [Toma_el_rasol] ${monthName} Monthly Birthday Roster (${birthdayChildren.length} Children)`,
+      subject: `🎂 [Bernaba_el_rasol] ${monthName} Monthly Birthday Roster (${birthdayChildren.length} Children)`,
       html: htmlBody,
       recipients: emailList
     };
@@ -106,7 +106,7 @@ const TomaEmailService = {
           <!-- Header -->
           <div style="background:#0D2040; padding:24px; text-align:center; border-bottom:4px solid #D4AF37;">
             <h1 style="color:#FFFFFF; margin:0; font-size:22px;">⏰ Tomorrow's Birthday Reminder!</h1>
-            <p style="color:#D4AF37; margin:6px 0 0 0; font-size:14px; text-transform:uppercase; letter-spacing:1px;">Toma_el_rasol • 1-Day Advance Alert</p>
+            <p style="color:#D4AF37; margin:6px 0 0 0; font-size:14px; text-transform:uppercase; letter-spacing:1px;">Bernaba_el_rasol • 1-Day Advance Alert</p>
           </div>
           
           <!-- Content -->
@@ -115,7 +115,7 @@ const TomaEmailService = {
               Hello Servant,
             </p>
             <p style="font-size:15px; color:#334155; line-height:1.6;">
-              This is an automated reminder from <strong>Toma_el_rasol</strong> that tomorrow we celebrate the birthday of <strong>${tomorrowChildren.length}</strong> child(ren):
+              This is an automated reminder from <strong>Bernaba_el_rasol</strong> that tomorrow we celebrate the birthday of <strong>${tomorrowChildren.length}</strong> child(ren):
             </p>
             
             ${childrenCards}
@@ -127,16 +127,16 @@ const TomaEmailService = {
           
           <!-- Footer -->
           <div style="background:#FAF8F5; padding:16px; text-align:center; border-top:1px solid #E2E8F0; font-size:12px; color:#64748B;">
-            Sender: Toma_el_rasol<br>
+            Sender: Bernaba_el_rasol<br>
             Sent automatically to: ${emailList.join(', ')}<br>
-            © Toma_el_rasol Church Class Management
+            © Bernaba_el_rasol Church Class Management
           </div>
         </div>
       </div>
     `;
 
     return {
-      subject: `⏰ [Toma_el_rasol] Birthday Reminder: ${tomorrowChildren.map(c => c.name).join(', ')}`,
+      subject: `⏰ [Bernaba_el_rasol] Birthday Reminder: ${tomorrowChildren.map(c => c.name).join(', ')}`,
       html: htmlBody,
       recipients: emailList
     };
@@ -167,11 +167,11 @@ const TomaEmailService = {
     const recipients = emailData.recipients || this.getNotificationEmails();
     const recipientsStr = recipients.join(',');
 
-    console.log('📧 Dispatching Birthday Email from Toma_el_rasol:', emailData.subject, 'To:', recipientsStr);
+    console.log('📧 Dispatching Birthday Email from Bernaba_el_rasol:', emailData.subject, 'To:', recipientsStr);
 
     if (typeof window !== 'undefined') {
       // Create plain text mailto body
-      const bodyText = `From: Toma_el_rasol\nTo: ${recipientsStr}\nSubject: ${emailData.subject}\n\nThis is an automated birthday notification from Toma_el_rasol.\n\nPlease check your admin dashboard for full details.`;
+      const bodyText = `From: Bernaba_el_rasol\nTo: ${recipientsStr}\nSubject: ${emailData.subject}\n\nThis is an automated birthday notification from Bernaba_el_rasol.\n\nPlease check your admin dashboard for full details.`;
       const mailtoUrl = `mailto:${encodeURIComponent(recipientsStr)}?subject=${encodeURIComponent(emailData.subject)}&body=${encodeURIComponent(bodyText)}`;
       try {
         window.location.href = mailtoUrl;
@@ -179,8 +179,8 @@ const TomaEmailService = {
         console.warn('Mailto link error:', e);
       }
 
-      if (typeof TomaUtils !== 'undefined' && TomaUtils.showToast) {
-        TomaUtils.showToast(`📧 Opening email reminder from Toma_el_rasol for ${recipients.join(', ')}!`, 'success');
+      if (typeof BernabaUtils !== 'undefined' && BernabaUtils.showToast) {
+        BernabaUtils.showToast(`📧 Opening email reminder from Bernaba_el_rasol for ${recipients.join(', ')}!`, 'success');
       }
     } else {
       console.log('⚡ Server/Node.js Environment: HTML Email Generated Successfully.');
@@ -190,10 +190,10 @@ const TomaEmailService = {
 };
 
 if (typeof window !== 'undefined') {
-  window.TomaEmailService = TomaEmailService;
+  window.BernabaEmailService = BernabaEmailService;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = TomaEmailService;
+  module.exports = BernabaEmailService;
 }
 

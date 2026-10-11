@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Toma el Rasol</title>
+  <title>Admin Dashboard - Bernaba el Rasol</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="../css/global.css">
@@ -23,17 +23,17 @@
 
   <div class="admin-layout">
     <!-- Dark Backdrop Overlay for Mobile Sidebar -->
-    <div class="sidebar-overlay" id="sidebar-overlay" onclick="TomaAdminApp.closeMobileSidebar()"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="BernabaAdminApp.closeMobileSidebar()"></div>
 
     <!-- Sidebar Navigation -->
     <aside class="admin-sidebar" id="admin-sidebar">
       <div class="sidebar-header">
         <img src="../assets/logo/logo.jpg" alt="Logo" class="sidebar-logo">
         <div class="sidebar-brand">
-          <h2>Toma el Rasol</h2>
+          <h2>Bernaba el Rasol</h2>
           <span>Admin Dashboard</span>
         </div>
-        <button class="sidebar-close-btn" onclick="TomaAdminApp.closeMobileSidebar()" title="Close Sidebar">✕</button>
+        <button class="sidebar-close-btn" onclick="BernabaAdminApp.closeMobileSidebar()" title="Close Sidebar">✕</button>
       </div>
 
       <nav class="sidebar-nav">
@@ -80,7 +80,7 @@
             <strong id="current-username-display" style="display:block; font-size:0.9rem; color:#fff;">Admin</strong>
             <span id="current-user-role-badge" class="user-role-badge badge-gold">General Admin</span>
           </div>
-          <button class="btn btn-outline-gold btn-sm" onclick="TomaAuth.logout()" title="Logout">🚪</button>
+          <button class="btn btn-outline-gold btn-sm" onclick="BernabaAuth.logout()" title="Logout">🚪</button>
         </div>
       </div>
     </aside>
@@ -88,12 +88,12 @@
     <!-- Main Content -->
     <main class="admin-main">
       <header class="admin-header">
-        <button class="mobile-menu-btn" onclick="TomaAdminApp.toggleMobileSidebar()">☰</button>
+        <button class="mobile-menu-btn" onclick="BernabaAdminApp.toggleMobileSidebar()">☰</button>
         <div class="page-title">
           <h1 id="active-tab-title">Kashf — Child Management</h1>
         </div>
         <div>
-          <a href="../Toma_elrasol.html" class="btn btn-outline btn-sm">🏠 Gateway Launcher</a>
+          <a href="../Bernaba_elrasol.html" class="btn btn-outline btn-sm">🏠 Gateway Launcher</a>
         </div>
       </header>
 
@@ -109,12 +109,12 @@
             </div>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
               <input type="file" id="input-excel-file" accept=".xlsx, .xls, .csv"
-                onchange="TomaExcelImporter.handleFileUpload(this.files[0])" style="display:none;">
+                onchange="BernabaExcelImporter.handleFileUpload(this.files[0])" style="display:none;">
               <button class="btn btn-outline-gold" onclick="document.getElementById('input-excel-file').click()">📊
                 Import from Excel</button>
-              <button class="btn btn-primary" onclick="TomaQR.exportAllQRCodesZip()">📥 Export All QR Codes
+              <button class="btn btn-primary" onclick="BernabaQR.exportAllQRCodesZip()">📥 Export All QR Codes
                 (ZIP)</button>
-              <button class="btn btn-gold" onclick="TomaUtils.openModal('modal-add-child')">+ Add Child
+              <button class="btn btn-gold" onclick="BernabaUtils.openModal('modal-add-child')">+ Add Child
                 Manually</button>
             </div>
           </div>
@@ -134,7 +134,7 @@
                   <span class="search-icon">🔍</span>
                   <input type="text" id="lb-search-input" class="form-control" placeholder="Filter leaderboard...">
                 </div>
-                <button class="btn btn-outline-danger btn-sm" onclick="TomaLeaderboard.confirmResetAllScores()"
+                <button class="btn btn-outline-danger btn-sm" onclick="BernabaLeaderboard.confirmResetAllScores()"
                   title="Reset all children scores to 0">🔄 Reset All Scores</button>
               </div>
             </div>
@@ -157,9 +157,9 @@
                   <input type="text" id="score-search-input" class="form-control" placeholder="Search children..."
                     style="max-width:260px;">
                   <div>
-                    <button class="btn btn-secondary btn-sm" onclick="TomaPointsEngine.selectAll(true)">Check
+                    <button class="btn btn-secondary btn-sm" onclick="BernabaPointsEngine.selectAll(true)">Check
                       All</button>
-                    <button class="btn btn-secondary btn-sm" onclick="TomaPointsEngine.selectAll(false)">Uncheck
+                    <button class="btn btn-secondary btn-sm" onclick="BernabaPointsEngine.selectAll(false)">Uncheck
                       All</button>
                   </div>
                 </div>
@@ -198,7 +198,7 @@
                 <p style="color:#64748B; font-size:0.85rem; margin:0;">Configure points automatically awarded when
                   attendance or custom events are logged.</p>
               </div>
-              <button class="btn btn-gold" onclick="TomaPointsEngine.openAddRuleModal()">+ Create New Rule</button>
+              <button class="btn btn-gold" onclick="BernabaPointsEngine.openAddRuleModal()">+ Create New Rule</button>
             </div>
             <div id="rules-table-container"></div>
           </div>
@@ -222,22 +222,22 @@
 
             <!-- Attendance Category Tabs -->
             <div class="attendance-type-selector">
-              <button class="att-tab" data-category="mass" onclick="TomaAttendance.switchCategory('mass')">⛪
+              <button class="att-tab" data-category="mass" onclick="BernabaAttendance.switchCategory('mass')">⛪
                 Mass</button>
               <button class="att-tab active" data-category="sunday_school"
-                onclick="TomaAttendance.switchCategory('sunday_school')">📖 Sunday School</button>
-              <button class="att-tab" data-category="hymns" onclick="TomaAttendance.switchCategory('hymns')">🎵
+                onclick="BernabaAttendance.switchCategory('sunday_school')">📖 Sunday School</button>
+              <button class="att-tab" data-category="hymns" onclick="BernabaAttendance.switchCategory('hymns')">🎵
                 Hymns</button>
               <button class="att-tab" data-category="bible_study"
-                onclick="TomaAttendance.switchCategory('bible_study')">💡 Bible Study</button>
+                onclick="BernabaAttendance.switchCategory('bible_study')">💡 Bible Study</button>
             </div>
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
               <input type="text" id="att-search-input" class="form-control" placeholder="Search child..."
                 style="max-width:280px;">
               <div>
-                <button class="btn btn-secondary btn-sm" onclick="TomaAttendance.selectAll(true)">Select All</button>
-                <button class="btn btn-secondary btn-sm" onclick="TomaAttendance.selectAll(false)">Deselect All</button>
+                <button class="btn btn-secondary btn-sm" onclick="BernabaAttendance.selectAll(true)">Select All</button>
+                <button class="btn btn-secondary btn-sm" onclick="BernabaAttendance.selectAll(false)">Deselect All</button>
               </div>
             </div>
 
@@ -264,7 +264,7 @@
                   style="width:200px;">
                 <input type="date" id="att-history-date-filter" class="form-control" style="width:auto;">
                 <button class="btn btn-secondary btn-sm"
-                  onclick="document.getElementById('att-history-date-filter').value=''; document.getElementById('att-history-search-input').value=''; TomaAttendance.renderAttendanceHistory();">Reset
+                  onclick="document.getElementById('att-history-date-filter').value=''; document.getElementById('att-history-search-input').value=''; BernabaAttendance.renderAttendanceHistory();">Reset
                   Filters</button>
               </div>
             </div>
@@ -272,13 +272,13 @@
             <!-- Attendance Category Tabs for History (Excluding All Categories) -->
             <div class="attendance-type-selector" style="margin-bottom:24px;">
               <button class="att-history-tab active" data-category="mass"
-                onclick="TomaAttendance.switchHistoryCategory('mass')">⛪ Mass</button>
+                onclick="BernabaAttendance.switchHistoryCategory('mass')">⛪ Mass</button>
               <button class="att-history-tab" data-category="sunday_school"
-                onclick="TomaAttendance.switchHistoryCategory('sunday_school')">📖 Sunday School</button>
+                onclick="BernabaAttendance.switchHistoryCategory('sunday_school')">📖 Sunday School</button>
               <button class="att-history-tab" data-category="hymns"
-                onclick="TomaAttendance.switchHistoryCategory('hymns')">🎵 Hymns</button>
+                onclick="BernabaAttendance.switchHistoryCategory('hymns')">🎵 Hymns</button>
               <button class="att-history-tab" data-category="bible_study"
-                onclick="TomaAttendance.switchHistoryCategory('bible_study')">💡 Bible Study</button>
+                onclick="BernabaAttendance.switchHistoryCategory('bible_study')">💡 Bible Study</button>
             </div>
 
             <div id="attendance-history-container"></div>
@@ -360,7 +360,7 @@
           <div class="card-container" style="margin-bottom:24px;">
             <div class="card-header-actions">
               <h3>Gift Catalog</h3>
-              <button class="btn btn-gold" onclick="TomaStore.openAddGiftModal()">+ Add New Gift Item</button>
+              <button class="btn btn-gold" onclick="BernabaStore.openAddGiftModal()">+ Add New Gift Item</button>
             </div>
             <div class="children-grid" id="admin-gifts-grid"></div>
           </div>
@@ -380,13 +380,13 @@
             </p>
 
             <div style="display:flex; flex-direction:column; gap:16px;">
-              <button class="btn btn-gold btn-lg" onclick="TomaBackup.exportBackup()">💾 Export Full JSON
+              <button class="btn btn-gold btn-lg" onclick="BernabaBackup.exportBackup()">💾 Export Full JSON
                 Backup</button>
 
               <div style="border:2px dashed #CBD5E1; border-radius:12px; padding:24px; background:#FAF8F5;">
                 <p style="font-weight:600; color:#0D2040; margin-bottom:12px;">Restore Backup File</p>
                 <input type="file" id="input-backup-file" accept=".json"
-                  onchange="TomaBackup.handleRestoreFile(this.files[0])" style="display:none;">
+                  onchange="BernabaBackup.handleRestoreFile(this.files[0])" style="display:none;">
                 <button class="btn btn-outline" onclick="document.getElementById('input-backup-file').click()">📂 Select
                   Backup JSON File</button>
               </div>
@@ -404,7 +404,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Add Child Manually</h3>
-        <button class="modal-close" onclick="TomaUtils.closeModal('modal-add-child')">×</button>
+        <button class="modal-close" onclick="BernabaUtils.closeModal('modal-add-child')">×</button>
       </div>
       <form id="form-add-child">
         <div class="modal-body">
@@ -419,7 +419,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-            onclick="TomaUtils.closeModal('modal-add-child')">Cancel</button>
+            onclick="BernabaUtils.closeModal('modal-add-child')">Cancel</button>
           <button type="submit" class="btn btn-gold">Create Child Record</button>
         </div>
       </form>
@@ -431,7 +431,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Edit Child Information</h3>
-        <button class="modal-close" onclick="TomaUtils.closeModal('modal-edit-child')">×</button>
+        <button class="modal-close" onclick="BernabaUtils.closeModal('modal-edit-child')">×</button>
       </div>
       <form id="form-edit-child">
         <input type="hidden" id="edit-child-id">
@@ -447,7 +447,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-            onclick="TomaUtils.closeModal('modal-edit-child')">Cancel</button>
+            onclick="BernabaUtils.closeModal('modal-edit-child')">Cancel</button>
           <button type="submit" class="btn btn-gold">Save Changes</button>
         </div>
       </form>
@@ -462,7 +462,7 @@
           <h3 id="profile-child-name">Child Name</h3>
           <span class="child-code" id="profile-child-code">CH-0000</span>
         </div>
-        <button class="modal-close" onclick="TomaUtils.closeModal('modal-child-profile')">×</button>
+        <button class="modal-close" onclick="BernabaUtils.closeModal('modal-child-profile')">×</button>
       </div>
       <div class="modal-body">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:20px;">
@@ -550,7 +550,7 @@
     <div class="modal-content" style="max-width:500px;">
       <div class="modal-header">
         <h3>Map Excel Columns</h3>
-        <button class="modal-close" onclick="TomaUtils.closeModal('modal-excel-mapping')">×</button>
+        <button class="modal-close" onclick="BernabaUtils.closeModal('modal-excel-mapping')">×</button>
       </div>
       <div class="modal-body">
         <p style="font-size:0.9rem; color:#64748B; margin-bottom:16px;">
@@ -567,8 +567,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary"
-          onclick="TomaUtils.closeModal('modal-excel-mapping')">Cancel</button>
-        <button type="button" class="btn btn-gold" onclick="TomaExcelImporter.processMappingAndPreview()">Generate
+          onclick="BernabaUtils.closeModal('modal-excel-mapping')">Cancel</button>
+        <button type="button" class="btn btn-gold" onclick="BernabaExcelImporter.processMappingAndPreview()">Generate
           Preview →</button>
       </div>
     </div>
@@ -579,7 +579,7 @@
     <div class="modal-content" style="max-width:640px;">
       <div class="modal-header">
         <h3>Preview Excel Import Data</h3>
-        <button class="modal-close" onclick="TomaUtils.closeModal('modal-excel-preview')">×</button>
+        <button class="modal-close" onclick="BernabaUtils.closeModal('modal-excel-preview')">×</button>
       </div>
       <div class="modal-body">
         <div id="excel-preview-summary" style="margin-bottom:14px; font-size:0.95rem;"></div>
@@ -660,7 +660,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="TomaUtils.closeModal('modal-gift')">Cancel</button>
+          <button type="button" class="btn btn-secondary" onclick="BernabaUtils.closeModal('modal-gift')">Cancel</button>
           <button type="submit" class="btn btn-gold">Save Gift</button>
         </div>
       </form>
