@@ -1,0 +1,90 @@
+========================================================================
+             TOMA EL RASOL - IMPORTANT ADMINISTRATIVE INFORMATION
+========================================================================
+
+1. ADMIN PORTAL LOGIN CREDENTIALS & ROLES
+------------------------------------------------------------------------
+To log in to the Admin Dashboard (open admin/index.html):
+
+• ROLE 1 — GENERAL ADMIN (Full Access to all tabs & system settings)
+  Username: admin
+  Password: 123  (or GeneralAdmin#733)
+
+• ROLE 2 — ATTENDANCE ADMIN (Access restricted ONLY to Record Attendance)
+  Username: attendance
+  Password: 123  (or AttendancePass#733)
+  * Note: Access is restricted ONLY to the Record Attendance interface.
+
+• ROLE 3 — T-DASH ADMIN (Access restricted ONLY to Manual Score / Bonus Points)
+  Username: T-dash
+  Password: 123  (or TDashPass#733)
+  * Note: Access is restricted ONLY to the Manual Score / Bonus Points interface. Audit Log is hidden.
+
+
+2. AUTOMATED 24/7 BIRTHDAY NOTIFICATION EMAILS
+------------------------------------------------------------------------
+• Recipient Email List Configuration File:
+  📁 js/email-config.js
+  
+  To configure recipient emails, edit NOTIFICATION_EMAILS in js/email-config.js:
+  NOTIFICATION_EMAILS: [
+    'servant@example.com'  // Add your email address(es) here
+  ]
+
+• Automated Schedule & Triggers:
+  1. Beginning of Month Email (1st of Month): Automatically sends a roster of all birthdays in that month with names and dates.
+  2. 1-Day Advance Reminder Email (Daily): Automatically sends a reminder the day before each child's birthday.
+  3. Automation: Configured via GitHub Actions (.github/workflows) and Supabase pg_cron.
+
+
+3. DIRECT ACCESS LINKS & USER ID ENTRY
+------------------------------------------------------------------------
+• Main Gateway:
+  Open Toma_elrasol.html in any modern browser
+
+• Admin Portal Direct:
+  Open admin/index.html
+
+• Child User Portal Direct:
+  Open user/index.html
+  - Displays a Child Username / Password entry form or 5-digit Child ID lookup
+  - Scanned QR codes directly open the child's personal profile (e.g. user/index.html?id=12345)
+
+
+4. 5-DIGIT RANDOM UNIQUE CHILD IDs
+------------------------------------------------------------------------
+• All Child IDs are generated as unique 5-digit random numbers (between 10000 and 99999).
+• Guaranteed zero duplicate IDs across the entire database.
+• Exported QR Code filenames follow the pattern: "Child Name_12345.png".
+
+
+5. GOING LIVE & STATIC HOSTING STEPS
+------------------------------------------------------------------------
+Option A: GitHub Pages
+1. Create a new GitHub repository and push all files from this project.
+2. In your repository settings, navigate to "Pages".
+3. Select "Branch: main", "Folder: / (root)", and click Save.
+
+Option B: Vercel / Netlify / Cloudflare Pages
+1. Connect your repository to Vercel/Netlify.
+2. Select default static deployment settings (no build step required).
+
+
+6. EXCEL IMPORTING & BATCH QR CODE EXPORT
+------------------------------------------------------------------------
+• Excel Importing:
+  - Go to Kashf (Children) -> Click "📊 Import from Excel".
+  - Map your columns to "Child Name" and "Birthdate".
+
+• Batch QR Code ZIP Export:
+  - Go to Kashf (Children) -> Click "📥 Export All QR Codes (ZIP)".
+
+
+7. LIVE SUPABASE DATABASE CONFIGURATION (OPTIONAL)
+------------------------------------------------------------------------
+The website runs immediately out of the box in offline/local storage mode without any database setup!
+If you wish to connect a live Supabase cloud database:
+1. Create a Supabase project at https://supabase.com
+2. Run schema.sql in your Supabase SQL Editor.
+3. Open js/config.js and paste your SUPABASE_URL and SUPABASE_ANON_KEY.
+========================================================================
