@@ -7,7 +7,7 @@
  */
 window.APP_CONFIG = {
   // Live Supabase Credentials (Optional: Leave empty for local storage offline mode, or enter your Supabase credentials)
-  SUPABASE_URL: 'https://Scoring-System.supabase.co',
+  SUPABASE_URL: 'https://thifdpwzapueqeeuexch.supabase.co',
   SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoaWZkcHd6YXB1ZXFlZXVleGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MTA0MjIsImV4cCI6MjEwNzI4NjQyMn0._MFwmPm3mpqjJ0IpqPvcitccvZvIa3wirum-mjRIYYE',
 
   // App Settings
