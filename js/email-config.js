@@ -16,6 +16,8 @@ const EMAIL_CONFIG = {
   // Automated Birthday Notification Recipient Email Addresses
   NOTIFICATION_EMAILS: [
     // Add your church servant email addresses here (e.g. 'servant@church.org')
+    "zcst010@gmail.com",
+    "Beshaymario@gmail.com"
   ],
 
   // Automated Email Service Options
@@ -26,8 +28,8 @@ const EMAIL_CONFIG = {
   DAILY_REMINDER_CRON: '0 16 * * *', // Daily at 16:00 PM (4:00 PM - 1 day before birthday reminder)
 
   // Default Email Branding
-  SENDER_NAME: 'Toma_el_rasol',
-  SENDER_EMAIL: 'Toma_el_rasol@church.org'
+  SENDER_NAME: 'bernaba_el_rasol',
+  SENDER_EMAIL: 'bernaba_el_rasol@church.org'
 };
 
 if (typeof window !== 'undefined') {
