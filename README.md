@@ -1,4 +1,4 @@
-# Toma el Rasol - Church Class Management Web Application
+# Bernaba el Rasol - Church Class Management Web Application
 
 Production-ready web application for managing a church youth class/group. Built around the brand identity of Saint Bernabas, featuring an **Admin Portal**, **Child User Portal**, QR Code generator, batch QR Code ZIP exporter, Excel importer with interactive column mapping, automatic point rules engine, streak calculator, Eftkad visit tracker, birthday celebration mode, gift store, JSON backup/restore, automated background birthday email notification engine, and Supabase integration.
 
